@@ -1,0 +1,6 @@
+﻿namespace ECommerce.Api.wwwroot
+{
+    public class abc
+    {
+    }
+}
