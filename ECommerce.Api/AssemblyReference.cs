@@ -1,5 +1,6 @@
 ﻿
 using ECommerce.Application;
+using ECommerce.Infrastructure;
 using ECommerce.Persistence;
 
 
@@ -11,6 +12,7 @@ namespace ECommerce.Api
         {
             services.AddApplicationServices();
             services.AddPersistenceServices(configuration);
+            services.AddInfrastructureServices();
             return services;
         }
     }

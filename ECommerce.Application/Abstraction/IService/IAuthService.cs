@@ -10,5 +10,6 @@ namespace ECommerce.Application.Abstraction.IService
     {
         Task<int> CustomerSignUp(CustomerAddressCompactRequest model);
         Task<int> EmployeeSignUp(EmployeeAddressCompactRequest model);
+        Task<int> Login(string userName, string password);
     }
 }

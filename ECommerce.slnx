@@ -8,6 +8,7 @@
     <Project Path="ECommerce.Domain/ECommerce.Domain.csproj" />
   </Folder>
   <Folder Name="/src/External/">
+    <Project Path="ECommerce.Infrastructure/ECommerce.Infrastructure.csproj" Id="12d72c77-801b-4809-a71a-69d1b2f17bf4" />
     <Project Path="ECommerce.Persistence/ECommerce.Persistence.csproj" />
   </Folder>
 </Solution>
