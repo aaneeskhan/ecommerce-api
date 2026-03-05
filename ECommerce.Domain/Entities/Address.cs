@@ -7,6 +7,7 @@ namespace ECommerce.Domain.Entities
 {
     public class Address:BaseEntity
     {
+
         public string AddressLine { get; set; }
         public string LandMark { get; set; }= string.Empty;
         public string Country { get; set; }

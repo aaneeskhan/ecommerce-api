@@ -20,24 +20,7 @@ namespace ECommerce.Application.Services
             var salt = appEncryption.GenerateSalt();
             var hashedPassword = appEncryption.HashPassword(model.Password, salt);
 
-            List<Address> addressList = new List<Address>();
-            foreach (var address in model.Addresses)
-            {
-                Address addrs = new Address()
-                {
-                    CreatedOn = DateTime.Now,
-                    AddressLine = address.AddressLine,
-                    LandMark = address.LandMark,
-                    Country = address.Country,
-                    State = address.State,
-                    City = address.City,
-                    PostalCode = address.PostalCode,
-                    PhoneNo = model.PhoneNo,
-
-                };
-                addressList.Add(addrs);
-            }
-
+       
 
             Users users = new Users()
             {
@@ -50,7 +33,17 @@ namespace ECommerce.Application.Services
                 UserStatus = UserStatus.Active,
                 UserRole = UserRole.Customer,
                 Salt = salt,
-                Addresses = addressList,
+                Addresses = model.Addresses.Select(address => new Address
+                {
+                    CreatedOn = DateTime.Now,
+                    AddressLine = address.AddressLine,
+                    LandMark = address.LandMark,
+                    Country = address.Country,
+                    State = address.State,
+                    City = address.City,
+                    PostalCode = address.PostalCode,
+                    PhoneNo = model.PhoneNo
+                }).ToList()
 
             };
 
