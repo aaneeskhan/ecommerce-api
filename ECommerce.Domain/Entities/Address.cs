@@ -5,6 +5,7 @@ using System.Text;
 
 namespace ECommerce.Domain.Entities
 {
+    [Table("Addresses")]
     public class Address:BaseEntity
     {
 

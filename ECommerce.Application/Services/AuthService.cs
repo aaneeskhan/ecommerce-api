@@ -1,8 +1,7 @@
-﻿using ECommerce.Application.Abstraction.IRepository;
+﻿using ECommerce.Application.Abstraction.AppEncryption;
+using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IService;
-using ECommerce.Application.AppEncryption;
 using ECommerce.Application.RRModels.UserAddressCompact;
-using ECommerce.Application.RRModels.Users;
 using ECommerce.Domain;
 using ECommerce.Domain.Entities;
 using System;
@@ -15,7 +14,7 @@ namespace ECommerce.Application.Services
     {
 
         #region Customer SignUp
-        public async Task<int> CustomerSignUp(CustomerAddressCompactRequest model)
+        public async Task<int> CustomerSignUp(UserAddressCompactRequest model)
         {
             var salt = appEncryption.GenerateSalt();
             var hashedPassword = appEncryption.HashPassword(model.Password, salt);
@@ -25,7 +24,6 @@ namespace ECommerce.Application.Services
             Users users = new Users()
             {
 
-                CreatedOn = DateTime.Now,
                 Email = model.Email,
                 PhoneNo = model.PhoneNo,
                 Password = hashedPassword,
@@ -33,17 +31,20 @@ namespace ECommerce.Application.Services
                 UserStatus = UserStatus.Active,
                 UserRole = UserRole.Customer,
                 Salt = salt,
-                Addresses = model.Addresses.Select(address => new Address
+                Addresses = new List<Address>()
                 {
-                    CreatedOn = DateTime.Now,
-                    AddressLine = address.AddressLine,
-                    LandMark = address.LandMark,
-                    Country = address.Country,
-                    State = address.State,
-                    City = address.City,
-                    PostalCode = address.PostalCode,
-                    PhoneNo = model.PhoneNo
-                }).ToList()
+                    new Address()
+                    {
+                        AddressLine = model.Address.AddressLine,
+                        LandMark = model.Address.LandMark,
+                        Country = model.Address.Country,
+                        State = model.Address.State,
+                        City = model.Address.City,
+                        PostalCode = model.Address.PostalCode,
+                        PhoneNo=model.Address.PhoneNo
+                    }
+                }
+               
 
             };
 
@@ -59,32 +60,14 @@ namespace ECommerce.Application.Services
 
 
         #region Employee SignUp
-        public async Task<int> EmployeeSignUp(EmployeeAddressCompactRequest model)
+        public async Task<int> EmployeeSignUp(UserAddressCompactRequest model)
         {
             var salt = appEncryption.GenerateSalt();
             var hashedPassword = appEncryption.HashPassword(model.Password, salt);
-            List<Address> addressList = new List<Address>();
-            foreach (var address in model.Addresses)
-            {
-                Address addrs = new Address()
-                {
-                    CreatedOn = DateTime.Now,
-                    AddressLine = address.AddressLine,
-                    LandMark = address.LandMark,
-                    Country = address.Country,
-                    State = address.State,
-                    City = address.City,
-                    PostalCode = address.PostalCode,
-                    PhoneNo = model.PhoneNo,
-
-                };
-                addressList.Add(addrs);
-            }
-
+          
             Users users = new Users()
             {
 
-                CreatedOn = DateTime.Now,
                 Email = model.Email,
                 PhoneNo = model.PhoneNo,
                 Password = hashedPassword,
@@ -92,7 +75,19 @@ namespace ECommerce.Application.Services
                 UserStatus = UserStatus.Active,
                 UserRole = UserRole.Admin,
                 Salt = salt,
-                Addresses = addressList
+                Addresses = new List<Address>()
+                {
+                    new Address()
+                    {
+                        AddressLine = model.Address.AddressLine,
+                        LandMark = model.Address.LandMark,
+                        Country = model.Address.Country,
+                        State = model.Address.State,
+                        City = model.Address.City,
+                        PostalCode = model.Address.PostalCode,
+                        PhoneNo=model.Address.PhoneNo
+                    }
+                }
             };
 
 
@@ -113,7 +108,7 @@ namespace ECommerce.Application.Services
             {
                 return 0;
             }
-            var hashedPassword = appEncryption.HashPassword(password, user.Password);
+            var hashedPassword = appEncryption.HashPassword(password, user.Salt);
             if (!hashedPassword.Equals(user.Password))
             {
                 return 1;

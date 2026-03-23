@@ -1,7 +1,6 @@
 ﻿using ECommerce.Application.Abstraction.IService;
 using ECommerce.Application.RRModels.Login;
 using ECommerce.Application.RRModels.UserAddressCompact;
-using ECommerce.Application.RRModels.Users;
 using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure.Encryption;
 using Microsoft.AspNetCore.Http;
@@ -17,7 +16,7 @@ namespace ECommerce.Api.Controllers
 
         //Add Customer
         [HttpPost("customer")]
-        public async Task<IActionResult> CustomerSignUp(CustomerAddressCompactRequest model)
+        public async Task<IActionResult> CustomerSignUp(UserAddressCompactRequest model)
         {
             int returnValue=await authService.CustomerSignUp(model);
             return returnValue>0?Ok("Customer Added Succesfully"):BadRequest("Failed to Add Customer");
@@ -26,7 +25,7 @@ namespace ECommerce.Api.Controllers
 
         //Add Employee
         [HttpPost("employee")]
-        public async Task<IActionResult> EmployeeSignUp(EmployeeAddressCompactRequest model)
+        public async Task<IActionResult> EmployeeSignUp(UserAddressCompactRequest model)
         {
             int returnValue = await authService.EmployeeSignUp(model);
             return returnValue > 0 ? Ok("Employee Added Succesfully") : BadRequest("Failed to Add Employee");

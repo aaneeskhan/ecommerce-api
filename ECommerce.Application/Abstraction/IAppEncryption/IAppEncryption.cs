@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECommerce.Application.AppEncryption
+namespace ECommerce.Application.Abstraction.AppEncryption
 {
     public interface IAppEncryption
     {

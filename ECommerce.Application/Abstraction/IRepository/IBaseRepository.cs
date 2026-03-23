@@ -8,6 +8,7 @@ namespace ECommerce.Application.Abstraction.IRepository
 {
     public interface IBaseRepository<T> where T:BaseEntity,new()
     {
+        //Read
         Task<IEnumerable<T>> GetAllAsync();
 
         Task<T> GetByIdAsync(Guid id);
@@ -23,13 +24,13 @@ namespace ECommerce.Application.Abstraction.IRepository
         Task<T> LastOrDefaultAsync(Expression<Func<T, bool>> expression);
 
 
-        //C=>Add Range
+        //C=>Add 
         Task<int> AddAsync(T entity);
 
         Task<int>AddRangeAsync(IEnumerable<T> entities);
 
 
-        //U=>Update Range
+        //U=>Update 
 
         Task<int> UpdateAsync(T entity);
 

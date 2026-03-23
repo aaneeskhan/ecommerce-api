@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.AppEncryption;
+﻿using ECommerce.Application.Abstraction.AppEncryption;
 using System;
 using System.Collections.Generic;
 using System.Text;

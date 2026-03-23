@@ -8,6 +8,6 @@ namespace ECommerce.Domain.Entities
     {
         public Guid Id { get; set; }=Guid.CreateVersion7();
 
-        public DateTime CreatedOn {  get; set; }
+        public DateTimeOffset CreatedOn {  get; set; }=DateTimeOffset.Now;
     }
 }

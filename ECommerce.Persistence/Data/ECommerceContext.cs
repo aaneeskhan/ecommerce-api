@@ -18,27 +18,11 @@ namespace ECommerce.Persistence.Data
         override protected void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Seed();
         }
 
-        public static class ECommerceSeedData
-        {
-            public static void Seed(ModelBuilder modelBuilder)
-            {
-                //modelBuilder.Entity<Product>.HasData(
 
-                //    new Product
-                //    {
-                //        Id = Guid.NewGuid(),
-                //        Name = "Product 1",
-                //        Description = "Description for Product 1",
-                //        Price = 9.99m,
-                //        CreatedOn = DateTime.UtcNow
-                //    },
-                //    );
-            }
-
-        }
-
+  
 
 
         public DbSet<Users> Users { get; set; }

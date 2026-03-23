@@ -7,14 +7,14 @@ using System.Text;
 
 namespace ECommerce.Application.RRModels.UserAddressCompact
 {
-    public class CustomerAddressCompactRequest
+    public class UserAddressCompactRequest
     {
         public string Email { get; set; }
         public string PhoneNo { get; set; } 
         public string Password { get; set; } 
         public string ConfirmationCode { get; set; }
 
-        public List<AddressRequest> Addresses { get; set; }
+        public AddressRequest Address { get; set; }
 
      
 

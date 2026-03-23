@@ -4,6 +4,7 @@ using System.Text;
 
 namespace ECommerce.Domain.Entities
 {
+
     public class Users:BaseEntity
     {
         public string Email { get; set; } = string.Empty;

@@ -1,4 +1,4 @@
-﻿using ECommerce.Application.AppEncryption;
+﻿using ECommerce.Application.Abstraction.AppEncryption;
 using ECommerce.Infrastructure.Encryption;
 using Microsoft.Extensions.DependencyInjection;
 
