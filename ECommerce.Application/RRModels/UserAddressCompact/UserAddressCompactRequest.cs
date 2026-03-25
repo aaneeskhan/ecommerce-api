@@ -12,12 +12,6 @@ namespace ECommerce.Application.RRModels.UserAddressCompact
         public string Email { get; set; }
         public string PhoneNo { get; set; } 
         public string Password { get; set; } 
-        public string ConfirmationCode { get; set; }
-
-        public AddressRequest Address { get; set; }
-
-     
-
       
     }
 }

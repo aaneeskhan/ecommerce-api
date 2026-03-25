@@ -40,8 +40,8 @@ namespace ECommerce.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("LandMark")
                         .IsRequired()
@@ -67,6 +67,21 @@ namespace ECommerce.Persistence.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Addresses");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("019d2377-69fb-7c48-922a-3bd1840c0728"),
+                            AddressLine = "BulBul Bagh",
+                            City = "Srinagar",
+                            Country = "India",
+                            CreatedOn = new DateTimeOffset(new DateTime(2026, 3, 25, 10, 58, 41, 723, DateTimeKind.Unspecified).AddTicks(3393), new TimeSpan(0, 5, 30, 0, 0)),
+                            LandMark = "Near Barzulla Bridge",
+                            PhoneNo = "9419440128",
+                            PostalCode = "190008",
+                            State = "Jammu And Kashmir",
+                            UserId = new Guid("019d2377-69f4-76c6-8efe-28dc43021415")
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Users", b =>
@@ -79,8 +94,8 @@ namespace ECommerce.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("CreatedOn")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -107,6 +122,20 @@ namespace ECommerce.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("019d2377-69f4-76c6-8efe-28dc43021415"),
+                            ConfirmationCode = "",
+                            CreatedOn = new DateTimeOffset(new DateTime(2026, 3, 25, 10, 58, 41, 717, DateTimeKind.Unspecified).AddTicks(9293), new TimeSpan(0, 5, 30, 0, 0)),
+                            Email = "admin@gmail.com",
+                            Password = "Password",
+                            PhoneNo = "9797893466",
+                            Salt = "abc",
+                            UserRole = 1,
+                            UserStatus = 1
+                        });
                 });
 
             modelBuilder.Entity("ECommerce.Domain.Entities.Address", b =>

@@ -1,6 +1,8 @@
 ﻿using ECommerce.Application.Abstraction.AppEncryption;
+using ECommerce.Application.Abstraction.IJwtProvider;
 using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IService;
+using ECommerce.Application.RRModels.Login;
 using ECommerce.Application.RRModels.UserAddressCompact;
 using ECommerce.Domain;
 using ECommerce.Domain.Entities;
@@ -10,7 +12,7 @@ using System.Text;
 
 namespace ECommerce.Application.Services
 {
-    public class AuthService(IAuthRepository authRepository, IAppEncryption appEncryption) : IAuthService
+    public class AuthService(IAuthRepository authRepository, IAppEncryption appEncryption, IJWTProvider jwtProvider) : IAuthService
     {
 
         #region Customer SignUp
@@ -19,36 +21,17 @@ namespace ECommerce.Application.Services
             var salt = appEncryption.GenerateSalt();
             var hashedPassword = appEncryption.HashPassword(model.Password, salt);
 
-       
-
             Users users = new Users()
             {
 
                 Email = model.Email,
                 PhoneNo = model.PhoneNo,
                 Password = hashedPassword,
-                ConfirmationCode = model.ConfirmationCode,
+                ConfirmationCode ="",
                 UserStatus = UserStatus.Active,
                 UserRole = UserRole.Customer,
                 Salt = salt,
-                Addresses = new List<Address>()
-                {
-                    new Address()
-                    {
-                        AddressLine = model.Address.AddressLine,
-                        LandMark = model.Address.LandMark,
-                        Country = model.Address.Country,
-                        State = model.Address.State,
-                        City = model.Address.City,
-                        PostalCode = model.Address.PostalCode,
-                        PhoneNo=model.Address.PhoneNo
-                    }
-                }
-               
-
             };
-
-
 
             int returnValue = await authRepository.AddAsync(users);
             return returnValue;
@@ -71,25 +54,12 @@ namespace ECommerce.Application.Services
                 Email = model.Email,
                 PhoneNo = model.PhoneNo,
                 Password = hashedPassword,
-                ConfirmationCode = model.ConfirmationCode,
+                ConfirmationCode = string.Empty,
                 UserStatus = UserStatus.Active,
                 UserRole = UserRole.Admin,
                 Salt = salt,
-                Addresses = new List<Address>()
-                {
-                    new Address()
-                    {
-                        AddressLine = model.Address.AddressLine,
-                        LandMark = model.Address.LandMark,
-                        Country = model.Address.Country,
-                        State = model.Address.State,
-                        City = model.Address.City,
-                        PostalCode = model.Address.PostalCode,
-                        PhoneNo=model.Address.PhoneNo
-                    }
-                }
+                
             };
-
 
 
             int returnValue = await authRepository.AddAsync(users);
@@ -101,19 +71,20 @@ namespace ECommerce.Application.Services
 
         #region Login
 
-        public async Task<int> Login(string userName, string password)
+        public async Task<string> Login(UserLogInRequest model)
         {
-            var user = await authRepository.FirstOrDefaultAsync(usr => usr.Email == userName);
-            if (user == null)
+            var user = await authRepository.FirstOrDefaultAsync(usr => usr.Email == model.userName);
+            if (user is null)
             {
-                return 0;
+                return "error";
             }
-            var hashedPassword = appEncryption.HashPassword(password, user.Salt);
+            var hashedPassword = appEncryption.HashPassword(model.password, user.Salt);
             if (!hashedPassword.Equals(user.Password))
             {
-                return 1;
+                return "error";
             }
-            return 2;
+
+             return jwtProvider.GenerateToken(user);
         }
         #endregion
 

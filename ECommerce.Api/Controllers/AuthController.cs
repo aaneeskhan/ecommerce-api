@@ -14,6 +14,8 @@ namespace ECommerce.Api.Controllers
     public class AuthController (IAuthService authService): ControllerBase
     {
 
+      
+
         //Add Customer
         [HttpPost("customer")]
         public async Task<IActionResult> CustomerSignUp(UserAddressCompactRequest model)
@@ -33,22 +35,15 @@ namespace ECommerce.Api.Controllers
 
 
         //Login
-        [HttpGet("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> UserLogin(UserLogInRequest  model)
         {
-            int returnValue= await authService.Login(model.userName, model.password);
-            if (returnValue == 0)
+            var token= await authService.Login(model);
+            if (token == "error")
             {
                 return NotFound("Incorrect UserName Or Password");
             }
-            else if (returnValue == 1)
-            {
-                return BadRequest("Authentication Failed");
-            }
-            else
-            {
-                return Ok("Logged In Succesfully");
-            }
+            return Ok(token);
         }
        
 

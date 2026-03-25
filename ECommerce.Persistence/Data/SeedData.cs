@@ -11,35 +11,40 @@ namespace ECommerce.Persistence.Data
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            Guid id = Guid.CreateVersion7();
+            Guid id = Guid.Parse("019d237c-86bf-78c1-aa52-ef2091ce5c25");
             modelBuilder.Entity<Users>().HasData(
 
                 new Users
                 {
                     Id = id,
-                    Email = "admin@gmail.com",
+                    Email = "sania@gmail.com",
                     PhoneNo = "9797893466",
                     UserRole = UserRole.Admin,
                     UserStatus = UserStatus.Active,
-                    Password = "Password",
-                    Salt = "abc",
-                    Addresses=new List<Address>
-                    {
-                        new Address
-                        {
-                            Id = Guid.CreateVersion7(),
-                            UserId = id,
-                            AddressLine="BulBul Bagh",
-                            LandMark="Near Barzulla Bridge",
-                            Country="India",
-                            City = "Srinagar",
-                            State = "Jammu And Kashmir",
-                            PostalCode = "190008",
-                            PhoneNo="9419440128"
-                        }
-                     }
+                    Password = "$2a$11$YOtZkxWhHmwRR4XiiwA1PO8WGZyTnzJXue6ZFesAsJiB8a3bzbXTi",
+                    Salt = "$2a$11$YOtZkxWhHmwRR4XiiwA1PO",
+                    ConfirmationCode = "",
+
+
                 }
                 );
+
+            modelBuilder.Entity<Address>().HasData(
+
+             new Address
+             {
+                 Id = Guid.CreateVersion7(),
+                 UserId = id,
+                 AddressLine = "BulBul Bagh",
+                 LandMark = "Near Barzulla Bridge",
+                 Country = "India",
+                 City = "Srinagar",
+                 State = "Jammu And Kashmir",
+                 PostalCode = "190008",
+                 PhoneNo = "9419440128"
+             });
+
+
         }
 
     }
