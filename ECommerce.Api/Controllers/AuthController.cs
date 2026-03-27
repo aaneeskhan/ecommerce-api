@@ -6,6 +6,7 @@ using ECommerce.Infrastructure.Encryption;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace ECommerce.Api.Controllers
 {
@@ -38,6 +39,13 @@ namespace ECommerce.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> UserLogin(UserLogInRequest  model)
         {
+        
+            //List<Claim> claims = new List<Claim>()
+            //{
+            //     new Claim("email","samia@gmail.com")
+            //};
+            //ClaimsIdentity identity = new ClaimsIdentity(claims,"Bearer");
+            //ClaimsPrincipal User=new ClaimsPrincipal(identity);
             var token= await authService.Login(model);
             if (token == "error")
             {
