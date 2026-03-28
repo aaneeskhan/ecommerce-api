@@ -20,8 +20,10 @@ namespace ECommerce.Infrastructure.JWTProvider
                 {
                   new Claim(UserClaims.UserId, user.Id.ToString()),
                   new Claim(UserClaims.Email, user.Email),
+                  //new Claim(JwtRegisteredClaimNames.Name, user.Email),
+                  //new Claim(JwtRegisteredClaimNames., user.Email),
                   new Claim(UserClaims.PhoneNo, user.PhoneNo),
-                  new Claim(UserClaims.UserRole, user.UserRole.ToString())
+                  new Claim(UserClaims.Role, user.UserRole.ToString())
 
                  }
                 

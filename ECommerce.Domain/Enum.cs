@@ -13,6 +13,7 @@ namespace ECommerce.Domain
     public enum UserRole
     {
        Admin=1,
-       Customer= 2
+       Customer= 2,
+       Merchant=3,
     }
 }

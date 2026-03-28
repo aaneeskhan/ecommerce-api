@@ -41,7 +41,9 @@ namespace ECommerce.Api.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> UserLogin(UserLogInRequest  model)
         {
-
+            //User.Identity.Name
+            //User.Identity.IsAuthenticated
+            
             //List<Claim> claims = new List<Claim>()
             //{
             //     new Claim("email","samia@gmail.com")
