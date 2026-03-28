@@ -17,6 +17,7 @@ namespace ECommerce.Api
         public static IServiceCollection AddApiServices(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddControllers();
+            services.AddHttpContextAccessor();
             services.AddApplicationServices();
             services.AddPersistenceServices(configuration);
             services.AddInfrastructureServices();
@@ -26,13 +27,13 @@ namespace ECommerce.Api
             // 2) validate
             // 3) valid    OR      not validated challege trigger
             // 4) string token converted into claimsPricipal
-            //              1)  each claim will be conveted into Claims   new Claim(UserClaims.UserId, "aJSFGJSGFSJGFSJFGJSGFSHGDFGSHDF")),
-                                                                        //new Claim(UserClaims.Email,"sani@gmail.com"),
+            //              1)  each claim will be conveted into Claims        new Claim(UserClaims.UserId, "aJSFGJSGFSJGFSJFGJSGFSHGDFGSHDF")),
+                                                                        //     new Claim(UserClaims.Email,"sani@gmail.com"),
                                                                         //      new Claim(UserClaims.PhoneNo, "92834729873492734),
                                                                         //      new Claim(UserClaims.UserRole,"admin)
 
                          // 2)  Claims Identity  
-                         // 3)  ClaimsPricipal  User
+                         // 3)  ClaimsPricipal = User
             // 5) Authorize
             // 6) Controller 
 
@@ -43,7 +44,7 @@ namespace ECommerce.Api
             {
                 option.DefaultAuthenticateScheme= JwtBearerDefaults.AuthenticationScheme;
                 option.DefaultChallengeScheme= JwtBearerDefaults.AuthenticationScheme;
-            })  .AddJwtBearer(options =>
+            }).AddJwtBearer(options =>
             {
                 options.Events = new JwtBearerEvents
                 {

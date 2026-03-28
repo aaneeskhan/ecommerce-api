@@ -3,6 +3,7 @@ using ECommerce.Application.RRModels.Login;
 using ECommerce.Application.RRModels.UserAddressCompact;
 using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure.Encryption;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using System.Security.Claims;
 
 namespace ECommerce.Api.Controllers
 {
+   
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController (IAuthService authService): ControllerBase
@@ -35,17 +37,18 @@ namespace ECommerce.Api.Controllers
         }
 
 
-        //Login
+      
         [HttpPost("login")]
         public async Task<IActionResult> UserLogin(UserLogInRequest  model)
         {
-        
+
             //List<Claim> claims = new List<Claim>()
             //{
             //     new Claim("email","samia@gmail.com")
             //};
             //ClaimsIdentity identity = new ClaimsIdentity(claims,"Bearer");
             //ClaimsPrincipal User=new ClaimsPrincipal(identity);
+          
             var token= await authService.Login(model);
             if (token == "error")
             {
@@ -53,7 +56,21 @@ namespace ECommerce.Api.Controllers
             }
             return Ok(token);
         }
-       
+
+
+        [Authorize]
+        [HttpGet("data")]
+        public IActionResult GetData()
+        {
+            //HttpContext.res
+            //var abc = User;
+            //var userId = User.Claims.FirstOrDefault(x => x.Type == "UserId").Value;
+            //var email = User.Claims.FirstOrDefault(x => x.Type == "Email").Value;
+            //var contactNo = User.Claims.FirstOrDefault(x => x.Type == "PhoneNo").Value;
+            //var role = User.Claims.FirstOrDefault(x => x.Type == "UserRole").Value;
+
+            return Ok("i am action");
+        }
 
 
 
