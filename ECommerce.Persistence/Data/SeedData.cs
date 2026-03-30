@@ -29,21 +29,7 @@ namespace ECommerce.Persistence.Data
                 }
                 );
 
-            modelBuilder.Entity<Address>().HasData(
-
-             new Address
-             {
-                 Id = Guid.CreateVersion7(),
-                 UserId = id,
-                 AddressLine = "BulBul Bagh",
-                 LandMark = "Near Barzulla Bridge",
-                 Country = "India",
-                 City = "Srinagar",
-                 State = "Jammu And Kashmir",
-                 PostalCode = "190008",
-                 PhoneNo = "9419440128"
-             });
-
+        
 
         }
 

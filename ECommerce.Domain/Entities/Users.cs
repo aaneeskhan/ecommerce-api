@@ -15,6 +15,5 @@ namespace ECommerce.Domain.Entities
         public UserStatus UserStatus { get; set; }=UserStatus.Active;
         public UserRole UserRole { get; set; } = UserRole.Customer;
 
-        public ICollection<Address> Addresses { get; set; }
     }
 }
