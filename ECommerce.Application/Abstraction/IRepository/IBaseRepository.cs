@@ -1,27 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
+using ECommerce.Domain.Entities;
 
 namespace ECommerce.Application.Abstraction.IRepository
 {
-    public interface IBaseRepository
+    public interface IBaseRepository<T> where T : BaseEntity, new()
     {
-        // AddAsync(T entity);
-        // UpdateAsync(T entity);
-        // DeleteAsync(T entity);
-        // DeleteByIdAsync(Guid id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(Guid id);
 
-        // GetAllAsync();
-        // GetByIdAsync(Guid id);
-        // FindAsync(params object[] keyValues);
-        // FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
-        // LastOrDefaultAsync(Expression<Func<T, bool>> predicate);
-        // AnyAsync(Expression<Func<T, bool>> predicate);
-        // CountAsync(Expression<Func<T, bool>> predicate);
+        Task<IQueryable<T>> FindByAsync(Expression<Func<T, bool>> expression);
+        Task<bool> IsExistAsync(Expression<Func<T, bool>> expression);
+        Task<int> CountAsync(Expression<Func<T, bool>> expression);
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression);
+        Task<T> LastOrDefaultAsync(Expression<Func<T, bool>> expression);
 
-        // AddRangeAsync(IEnumerable<T> entities);
-        // DeleteRangeAsync(IEnumerable<T> entities);
-        // DeleteRangeByIdsAsync(IEnumerable<Guid> ids);
-        // UpdateRangeAsync(IEnumerable<T> entities);
+
+        //ADD
+
+        Task<int> AddAsync(T entity);
+        Task<int> AddRAngeAsync(IEnumerable<T> entities);
+
+        //Update
+
+        Task<int> UpdateAsync(T entity);
+        Task<int> UpdateRangeAsync(IEnumerable<T> entities);
+
+        //DELETE
+
+        Task<int> DeleteAsync(T entities);
+        Task<int> DeleteRangeAsync(IEnumerable<T> entities);
+        Task<int> DeleteAsync(Guid id);
+        Task<int> DeleteRangeAsync(IEnumerable<Guid> ids);
     }
 }
