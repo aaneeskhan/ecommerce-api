@@ -16,7 +16,7 @@ namespace ECommerce.Api
         {
             services.AddControllers();
            
-
+               services.AddApp
 
             // 1) Client request
             // 2) validate

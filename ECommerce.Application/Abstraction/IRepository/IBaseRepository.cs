@@ -1,10 +1,11 @@
-﻿using System;
+﻿using ECommerce.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace ECommerce.Application.Abstraction.IRepository
 {
-    public interface IBaseRepository
+    public interface IBaseRepository<T> where T : BaseEntity, new()
     {
         // AddAsync(T entity);
         // UpdateAsync(T entity);

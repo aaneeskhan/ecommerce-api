@@ -9,7 +9,10 @@ namespace ECommerce.Persistence
     {
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services,IConfiguration configuration)
         {
-          
+            services.AddDbContext<ECommerceContext>(options =>
+            {
+                options.UseSqlServer(configuration.GetConnectionString("ECommerceDbContext"));
+            }); 
             return services;
         }
     }
