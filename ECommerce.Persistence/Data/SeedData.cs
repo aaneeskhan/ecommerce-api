@@ -11,9 +11,9 @@ namespace ECommerce.Persistence.Data
     {
         public static void Seed(this ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Users>().HasData(
+            modelBuilder.Entity<User>().HasData(
 
-                new Users
+                new User
                 {
                     Id = Guid.Parse("019d237c-86bf-78c1-aa52-ef2091ce5c25"),
                     Email = "sania@gmail.com",
