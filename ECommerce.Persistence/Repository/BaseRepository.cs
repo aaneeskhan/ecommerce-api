@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ECommerce.Persistence.Repository
 {
-    internal class BaseRepository<T>: IBaseRepository<T> where T : BaseEntity, new()
+    public class BaseRepository<T>: IBaseRepository<T> where T : BaseEntity, new()
     {
         private readonly ECommerceContext context;
 

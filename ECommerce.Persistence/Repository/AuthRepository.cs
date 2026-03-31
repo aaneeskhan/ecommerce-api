@@ -1,10 +1,15 @@
-﻿using System;
+﻿using ECommerce.Application.Abstraction.IRepository;
+using ECommerce.Domain.Entities;
+using ECommerce.Persistence.Data;
+using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace ECommerce.Persistence.Repository
 {
-    internal class AuthRepository
+    public class AuthRepository(ECommerceContext context) : BaseRepository<Users>(context),IAuthRepository
     {
+  
     }
 }

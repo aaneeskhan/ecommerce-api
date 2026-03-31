@@ -1,4 +1,7 @@
-﻿using ECommerce.Persistence.Data;
+﻿using ECommerce.Application.Abstraction.IRepository;
+using ECommerce.Domain.Entities;
+using ECommerce.Persistence.Data;
+using ECommerce.Persistence.Repository;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,7 +12,9 @@ namespace ECommerce.Persistence
     {
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services,IConfiguration configuration)
         {
-          
+            services.AddDbContext<ECommerceContext>(X => X.UseSqlServer(configuration.GetConnectionString(nameof(ECommerceContext))));
+            services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<IBaseRepository<Users>, BaseRepository<Users>>();
             return services;
         }
     }
