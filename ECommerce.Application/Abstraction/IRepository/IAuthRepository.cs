@@ -4,7 +4,7 @@ using System.Text;
 
 namespace ECommerce.Application.Abstraction.IRepository
 {
-    internal interface IAuthRepository
+    public interface IAuthRepository
     {
     }
 }

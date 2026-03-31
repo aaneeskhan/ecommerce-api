@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Abstraction\IService\" />
-    <Folder Include="Service\" />
   </ItemGroup>
 
 </Project>

@@ -1,28 +1,44 @@
 ﻿using ECommerce.Domain.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace ECommerce.Application.Abstraction.IRepository
 {
-    public interface IBaseRepository<T> where T : BaseEntity, new()
+    public interface IBaseRepository<T> where T:BaseEntity, new()
     {
-        // AddAsync(T entity);
-        // UpdateAsync(T entity);
-        // DeleteAsync(T entity);
-        // DeleteByIdAsync(Guid id);
+        #region Read
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(Guid id);
+        Task<IQueryable<T>> FindByAsync(Expression<Func<T, bool>> expression);
+        Task<bool> IsExitAsync(Expression<Func<T, bool>> expression);
+        Task<int> CountAsync(Expression<Func<T, bool>> expression);
+        Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> expression);
+        Task<T> LastOrDefaultAsync(Expression<Func<T, bool>> expression);
+        #endregion
 
-        // GetAllAsync();
-        // GetByIdAsync(Guid id);
-        // FindAsync(params object[] keyValues);
-        // FirstOrDefaultAsync(Expression<Func<T, bool>> predicate);
-        // LastOrDefaultAsync(Expression<Func<T, bool>> predicate);
-        // AnyAsync(Expression<Func<T, bool>> predicate);
-        // CountAsync(Expression<Func<T, bool>> predicate);
 
-        // AddRangeAsync(IEnumerable<T> entities);
-        // DeleteRangeAsync(IEnumerable<T> entities);
-        // DeleteRangeByIdsAsync(IEnumerable<Guid> ids);
-        // UpdateRangeAsync(IEnumerable<T> entities);
+
+        #region Create
+        Task<int> AddAsync(T entity);
+        Task<int> AddRangeAsync(IEnumerable<T> entities);
+        #endregion
+
+
+
+        #region Update
+        Task<int> UpdateAsync(T entity);
+        Task<int> UpdateRangeAsync(IEnumerable<T> entities);
+        #endregion
+
+
+
+        #region Delete
+        Task<int> DeleteAsync(T entity);
+        Task<int> DeleteRangeAsync(IEnumerable<T> entities);
+        Task<int> DeleteAsync(Guid Id);
+        Task<int> DeleteRangeAsync(IEnumerable<Guid> Ids);
+        #endregion
     }
 }
