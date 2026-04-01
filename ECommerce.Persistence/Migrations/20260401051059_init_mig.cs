@@ -33,7 +33,7 @@ namespace ECommerce.Persistence.Migrations
             migrationBuilder.InsertData(
                 table: "Users",
                 columns: new[] { "Id", "ConfirmationCode", "CreatedOn", "Email", "Password", "PhoneNo", "Salt", "UserRole", "UserStatus" },
-                values: new object[] { new Guid("019d237c-86bf-78c1-aa52-ef2091ce5c25"), "", new DateTimeOffset(new DateTime(2026, 3, 31, 23, 44, 49, 814, DateTimeKind.Unspecified).AddTicks(2002), new TimeSpan(0, 5, 30, 0, 0)), "sania@gmail.com", "$2a$11$YOtZkxWhHmwRR4XiiwA1PO8WGZyTnzJXue6ZFesAsJiB8a3bzbXTi", "9797893466", "$2a$11$YOtZkxWhHmwRR4XiiwA1PO", 1, 1 });
+                values: new object[] { new Guid("019d237c-86bf-78c1-aa52-ef2091ce5c25"), "", new DateTimeOffset(new DateTime(2026, 4, 1, 10, 40, 55, 465, DateTimeKind.Unspecified).AddTicks(4825), new TimeSpan(0, 5, 30, 0, 0)), "sania@gmail.com", "$2a$11$YOtZkxWhHmwRR4XiiwA1PO8WGZyTnzJXue6ZFesAsJiB8a3bzbXTi", "9797893466", "$2a$11$YOtZkxWhHmwRR4XiiwA1PO", 1, 1 });
         }
 
         /// <inheritdoc />

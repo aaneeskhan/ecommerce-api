@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Persistence.Migrations
 {
     [DbContext(typeof(ECommerceContext))]
-    [Migration("20260331181454_init_mig")]
+    [Migration("20260401051059_init_mig")]
     partial class init_mig
     {
         /// <inheritdoc />
@@ -25,7 +25,7 @@ namespace ECommerce.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("ECommerce.Domain.Entities.Users", b =>
+            modelBuilder.Entity("ECommerce.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -69,7 +69,7 @@ namespace ECommerce.Persistence.Migrations
                         {
                             Id = new Guid("019d237c-86bf-78c1-aa52-ef2091ce5c25"),
                             ConfirmationCode = "",
-                            CreatedOn = new DateTimeOffset(new DateTime(2026, 3, 31, 23, 44, 49, 814, DateTimeKind.Unspecified).AddTicks(2002), new TimeSpan(0, 5, 30, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2026, 4, 1, 10, 40, 55, 465, DateTimeKind.Unspecified).AddTicks(4825), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "sania@gmail.com",
                             Password = "$2a$11$YOtZkxWhHmwRR4XiiwA1PO8WGZyTnzJXue6ZFesAsJiB8a3bzbXTi",
                             PhoneNo = "9797893466",

@@ -18,7 +18,7 @@ namespace ECommerce.Application.Service
             var salt = appEncryption.GenerateSalt();
             var hashedPassword = appEncryption.HashPassword(model.Password, salt);
 
-            Users users = new Users()
+            User users = new User()
             {
                 Email = model.Email,
                 PhoneNo = model.PhoneNo,

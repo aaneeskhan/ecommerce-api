@@ -7,6 +7,6 @@ namespace ECommerce.Application.Abstraction.IJWTProvider
 {
     public interface IJWTProvider
     {
-        public string GenerateToken(Users users);
+        public string GenerateToken(User users);
     }
 }

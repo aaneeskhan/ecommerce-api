@@ -17,8 +17,8 @@ namespace ECommerce.Api
         {
             services.AddControllers();
             services.AddApplicationServices();
-            services.AddPersistenceServices(configuration);
             services.AddInfrastructureServices();
+            services.AddPersistenceServices(configuration);
 
             services.AddAuthentication(options =>
             {
