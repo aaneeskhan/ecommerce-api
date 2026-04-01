@@ -1,15 +1,14 @@
-﻿using ECommerce.Application.Abstraction.IRepository;
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Domain.Entities;
 using ECommerce.Persistence.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Text;
 
 namespace ECommerce.Persistence.Repository
 {
-    public class AuthRepository(ECommerceContext context) : BaseRepository<Users>(context),IAuthRepository
+    public class AuthRepository(ECommerceContext context) :BaseRepository<User>(context), IAuthRepository
     {
-  
+       
     }
 }

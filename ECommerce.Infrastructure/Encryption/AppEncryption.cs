@@ -1,11 +1,11 @@
-﻿using ECommerce.Application.Abstraction.IAppEncryption;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ECommerce.Application.Abstraction.IAppEncryption;
 
 namespace ECommerce.Infrastructure.Encryption
 {
-    public class AppEncryption: IAppEncryption
+    public class AppEncryption:IAppEncryption 
     {
         public string GenerateSalt()
         {

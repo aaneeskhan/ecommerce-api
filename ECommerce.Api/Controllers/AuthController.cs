@@ -1,5 +1,5 @@
-﻿using ECommerce.Application.Abstraction.IService;
-using ECommerce.Application.Abstraction.RRModels.Auth;
+﻿using ECommerce.Application.Abstraction.IServices;
+using ECommerce.Application.RRModels.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,18 +7,33 @@ namespace ECommerce.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthController(IAuthService authService) : ControllerBase
+    public class AuthController(IAuthServices authServices) : ControllerBase
     {
         [HttpPost("signup")]
-        public async Task<IActionResult> UserSignUp(SignUpRequest model)
+
+        public async Task<IActionResult> SignUp(SignUpRequest model)
         {
-            var user = await authService.UserSignUp(model);
-            if (user > 0)
+            if (ModelState.IsValid)
             {
-                return Ok("User Created successfull");
+                return Ok(await authServices.SignUp(model));
+
             }
-            else
-                return BadRequest("There is some issue please try after some time");
+            return BadRequest("Something went wrong");
+            
         }
+
+        [HttpGet("login")]
+
+        public async Task<IActionResult> Login(LoginRequest model)
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(await authServices.Login(model));
+
+            }
+            return BadRequest("Something went wrong");
+
+        }
+
     }
 }
