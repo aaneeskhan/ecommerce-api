@@ -14,8 +14,4 @@
     <ProjectReference Include="..\ECommerce.Domain\ECommerce.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Abstraction\IService\" />
-  </ItemGroup>
-
 </Project>

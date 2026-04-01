@@ -1,4 +1,5 @@
 ﻿
+using ECommerce.Application;
 using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure;
 using ECommerce.Persistence;
@@ -15,8 +16,10 @@ namespace ECommerce.Api
         public static IServiceCollection AddApiServices(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddControllers();
-           
-               services.AddApp
+            services.AddApplicationServices();
+            services.AddPersistenceServices(configuration);
+            services.AddInfrastructureServices();
+
 
             // 1) Client request
             // 2) validate

@@ -11,9 +11,9 @@ namespace ECommerce.Domain.Entities
         public string PhoneNo { get; set; } = string.Empty;
         public string Password { get; set; }= string.Empty;
         public string Salt { get; set; }= string.Empty;
-        public string ConfirmationCode { get; set; }
+        public string ConfirmationCode { get; set; } = string.Empty;
         public UserStatus UserStatus { get; set; }=UserStatus.Active;
-        public UserRole UserRole { get; set; } = UserRole.Customer;
+        public UserRole UserRole { get; set; }
 
     }
 }
