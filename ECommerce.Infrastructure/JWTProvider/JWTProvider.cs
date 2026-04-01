@@ -29,7 +29,7 @@ namespace ECommerce.Infrastructure.JWTProvider
 
                 SigningCredentials = new SigningCredentials(
 
-                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!)),
+                    new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"])),
                     SecurityAlgorithms.HmacSha256
                     )
             };

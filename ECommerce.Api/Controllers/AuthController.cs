@@ -11,9 +11,29 @@ namespace ECommerce.Api.Controllers
     {
         [HttpPost("signup")]
 
-        public async Task<string> SignUp(SignUpRequest model)
-        { 
-            return await authServices.SignUp(model);
+        public async Task<IActionResult> SignUp(SignUpRequest model)
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(await authServices.SignUp(model));
+
+            }
+            return BadRequest("Something went wrong");
+            
         }
+
+        [HttpGet("login")]
+
+        public async Task<IActionResult> Login(LoginRequest model)
+        {
+            if (ModelState.IsValid)
+            {
+                return Ok(await authServices.Login(model));
+
+            }
+            return BadRequest("Something went wrong");
+
+        }
+
     }
 }
