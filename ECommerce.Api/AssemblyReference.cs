@@ -24,7 +24,6 @@ namespace ECommerce.Api
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
             }).AddJwtBearer(options =>
             {
                 options.Events = new JwtBearerEvents
@@ -37,13 +36,24 @@ namespace ECommerce.Api
                         return context.Response.WriteAsync("{\"error\": \"You are not authorized to access this resource. Please login again.\"}");
                     }
                 };
-
+                //options.RequireHttpsMetadata = true;
+                //options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidAudience = configuration["JWT:Audience"],
+                    ValidateAudience = true,
+                    ValidIssuer = configuration["JWT:Issuer"],
+                    ValidateIssuer = true,
+                    ValidateIssuerSigningKey = true,
+                    RequireExpirationTime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!))
+                };
             });
 
 
-            
-                
-                
+
+
+
 
 
             // 1) Client request
