@@ -26,6 +26,8 @@ namespace ECommerce.Api.Controllers
 
         public async Task<IActionResult> Login(LoginRequest model)
         {
+            // Context
+            // ClaimsPricipal = User
             if (ModelState.IsValid)
             {
                 return Ok(await authServices.Login(model));

@@ -20,7 +20,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
-
+app.UseCors("EcommersePolicy");
 app.MapControllers();
 
 app.Run();
