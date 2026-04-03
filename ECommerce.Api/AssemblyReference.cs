@@ -46,7 +46,7 @@ namespace ECommerce.Api
                     ValidateIssuer = true,
                     ValidateIssuerSigningKey = true,
                     RequireExpirationTime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!))
                 };
             });
 
