@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Persistence.Migrations
 {
     [DbContext(typeof(ECommerceContext))]
-    [Migration("20260331051021_init_mig")]
+    [Migration("20260402043145_init_mig")]
     partial class init_mig
     {
         /// <inheritdoc />
@@ -69,7 +69,7 @@ namespace ECommerce.Persistence.Migrations
                         {
                             Id = new Guid("019d237c-86bf-78c1-aa52-ef2091ce5c25"),
                             ConfirmationCode = "",
-                            CreatedOn = new DateTimeOffset(new DateTime(2026, 3, 31, 10, 40, 16, 184, DateTimeKind.Unspecified).AddTicks(9444), new TimeSpan(0, 5, 30, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2026, 4, 2, 10, 1, 41, 357, DateTimeKind.Unspecified).AddTicks(876), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "sania@gmail.com",
                             Password = "$2a$11$YOtZkxWhHmwRR4XiiwA1PO8WGZyTnzJXue6ZFesAsJiB8a3bzbXTi",
                             PhoneNo = "9797893466",

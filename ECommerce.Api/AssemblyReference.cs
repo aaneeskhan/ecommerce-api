@@ -19,6 +19,18 @@ namespace ECommerce.Api
             services.AddApplicationServices();
             services.AddPersistenceServices(configuration);
             services.AddInfrastructureServices();
+            services.AddHttpContextAccessor();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("ECommercePolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    ;
+                });
+            });
 
             services.AddAuthentication(options =>
             {
@@ -45,8 +57,7 @@ namespace ECommerce.Api
                     ValidIssuer = configuration["JWT:Issuer"],
                     ValidateIssuer = true,
                     ValidateIssuerSigningKey = true,
-                    RequireExpirationTime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]!))
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Secret"]!))
                 };
             });
 
