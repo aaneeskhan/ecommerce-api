@@ -20,6 +20,19 @@ namespace ECommerce.Api
             services.AddInfrastructureServices();
             services.AddPersistenceServices(configuration);
 
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("EcommersePolicy", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+
+
+                });
+            });
+
             services.AddAuthentication(options =>
             {
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
