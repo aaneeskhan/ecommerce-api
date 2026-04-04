@@ -9,7 +9,7 @@ namespace ECommerce.Application.RRModels.Auth
     public class SignUpRequest
     {
         [Required(ErrorMessage ="Email is Required")]
-        [RegularExpression("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/", ErrorMessage = "Invalid Email Format")]
+        //[RegularExpression("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/", ErrorMessage = "Invalid Email Format")]
         public string Email { get; set; }
 
         public string PhoneNo { get; set; }

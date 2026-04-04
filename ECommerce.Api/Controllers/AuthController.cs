@@ -22,7 +22,7 @@ namespace ECommerce.Api.Controllers
             
         }
 
-        [HttpGet("login")]
+        [HttpPost("login")]
 
         public async Task<IActionResult> Login(LoginRequest model)
         {
