@@ -10,7 +10,7 @@ namespace ECommerce.Application.Utils.Result
     {
         public T Value{ get; set; }
 
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
 
         public bool IsSuccess { get; set; }
 
@@ -18,7 +18,7 @@ namespace ECommerce.Application.Utils.Result
 
         // ProblemDetails for error handling
 
-        private Result(T value= default, string message="", bool isSuccess=false, int statusCode=200)
+        private Result(T value= default, string message="", bool isSuccess=true, int statusCode=200)
         {
             if (statusCode >= 600)
             {

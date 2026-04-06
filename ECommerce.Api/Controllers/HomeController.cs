@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using ECommerce.Api.CustomExtensions;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace ECommerce.Api.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]
+  
     public class HomeController : ControllerBase
     {
         public IActionResult Get()

@@ -1,4 +1,5 @@
 ﻿using Azure;
+using ECommerce.Api.CustomExtensions;
 using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.RRModels.Auth;
 using Microsoft.AspNetCore.Http;
@@ -26,21 +27,8 @@ namespace ECommerce.Api.Controllers
 
         [HttpPost("login")]
 
-        public async Task<IActionResult> Login(LoginRequest model)
-        {
-            // Context
-            // ClaimsPricipal = User
-            //if (ModelState.IsValid)
-            //{
-               var response = await authServices.Login(model);
-              //  return response;
-            
-                return Ok(response);
-
-           // return BadRequest(response.Message);
-           // }
-           // return BadRequest(response.Message);
-        }
+        public async Task<IResult> Login(LoginRequest model) =>   this.ApiResponse(await authServices.Login(model));
+          
 
     }
 }
