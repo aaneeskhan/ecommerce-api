@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using ECommerce.Application.Abstraction.IAppEncryption;
 using ECommerce.Application.Abstraction.IJwtProvider;
 using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.RRModels.Auth;
+using ECommerce.Application.RRModels.Users;
+using ECommerce.Application.Utils.Result;
 using ECommerce.Domain.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace ECommerce.Application.Services
 {
@@ -35,21 +39,33 @@ namespace ECommerce.Application.Services
             return "Something went wrong";
         }
 
-        public async Task<string> Login(LoginRequest model)
+        public async Task<Result<string>> Login(LoginRequest model)
         {
             var user=await authRepository.FirstOrDefaultAsync(user=>user.Email==model.Email);
             if(user is null)
             {
-                return "Invalid Credentials";
+                return Result<string>.Failure("Invalid Credentials", StatusCodes.Status400BadRequest);
             }
             var hashedPassword = appEncryption.HashPassword(model.Password, user.Salt);
             if (hashedPassword != user.Password)
             {
-                return "Invalid Credentials";
+               return Result<string>.Failure("Invalid Credentials", StatusCodes.Status400BadRequest);
             }
             var token = jWTrovider.GenerateToken(user);
-            return token;
+          return Result<string>.Success(token);
+        }
 
+        public async Task<Result<IEnumerable<UserResponse>>> GetUsers()
+        {
+           var res= (await authRepository.GetAllAsync()).Select(x=> new UserResponse
+            {
+                Email=x.Email,
+                PhoneNo=x.PhoneNo,
+                UserRole=x.UserRole,
+                UserStatus=x.UserStatus
+                
+            });
+            return Result<IEnumerable<UserResponse>>.Success(res);
         }
     }
 }
