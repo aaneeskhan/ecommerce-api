@@ -28,7 +28,10 @@ namespace ECommerce.Api.Controllers
         [HttpPost("login")]
 
         public async Task<IResult> Login(LoginRequest model) =>   this.ApiResponse(await authServices.Login(model));
-          
 
+
+        [HttpGet("users")]
+        public async Task<IResult> GetUsers() => this.ApiResponse(await authServices.GetUsers());
+        
     }
 }

@@ -13,6 +13,11 @@ namespace ECommerce.Application.Service
 {
     public class AuthService(IAppEncryption appEncryption,IAuthRepository authRepository, IJWTProvider jwtProvider) : IAuthService
     {
+        public async Task<IEnumerable<User>> GetUsers()
+        {
+            return await authRepository.GetAllAsync();
+        }
+
         public async Task<int> UserSignUp(SignUpRequest model)
         {
             var salt = appEncryption.GenerateSalt();

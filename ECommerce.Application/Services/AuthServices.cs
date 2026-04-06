@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using ECommerce.Application.Abstraction.IAppEncryption;
 using ECommerce.Application.Abstraction.IJwtProvider;
 using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.RRModels.Auth;
+using ECommerce.Application.RRModels.Users;
 using ECommerce.Application.Utils.Result;
 using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Http;
@@ -51,6 +53,19 @@ namespace ECommerce.Application.Services
             }
             var token = jWTrovider.GenerateToken(user);
           return Result<string>.Success(token);
+        }
+
+        public async Task<Result<IEnumerable<UserResponse>>> GetUsers()
+        {
+           var res= (await authRepository.GetAllAsync()).Select(x=> new UserResponse
+            {
+                Email=x.Email,
+                PhoneNo=x.PhoneNo,
+                UserRole=x.UserRole,
+                UserStatus=x.UserStatus
+                
+            });
+            return Result<IEnumerable<UserResponse>>.Success(res);
         }
     }
 }
