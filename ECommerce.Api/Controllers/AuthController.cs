@@ -1,10 +1,12 @@
-﻿using ECommerce.Application.Abstraction.IServices;
+﻿using Azure;
+using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.RRModels.Auth;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers
 {
+    // http://localhost:5032/api/auth/signup
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController(IAuthServices authServices) : ControllerBase
@@ -28,13 +30,16 @@ namespace ECommerce.Api.Controllers
         {
             // Context
             // ClaimsPricipal = User
-            if (ModelState.IsValid)
-            {
-                return Ok(await authServices.Login(model));
+            //if (ModelState.IsValid)
+            //{
+               var response = await authServices.Login(model);
+              //  return response;
+            
+                return Ok(response);
 
-            }
-            return BadRequest("Something went wrong");
-
+           // return BadRequest(response.Message);
+           // }
+           // return BadRequest(response.Message);
         }
 
     }

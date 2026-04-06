@@ -18,9 +18,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseCors("EcommersePolicy");     
 app.UseAuthentication();
 app.UseAuthorization();
-app.UseCors("EcommersePolicy");
 app.MapControllers();
 
 app.Run();
