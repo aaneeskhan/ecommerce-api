@@ -1,17 +1,19 @@
-﻿using ECommerce.Api.CustomExtensions;
+﻿using Azure;
+using ECommerce.Api.CustomExtensions;
 using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.RRModels.Auth;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers
 {
+    // http://localhost:5032/api/auth/signup
     [Route("api/[controller]")]
     [ApiController]
     public class AuthController(IAuthServices authServices) : ControllerBase
     {
         [HttpPost("signup")]
-        
+
         public async Task<IActionResult> SignUp(SignUpRequest model)
         {
             if (ModelState.IsValid)
@@ -23,18 +25,12 @@ namespace ECommerce.Api.Controllers
             
         }
 
-        [HttpGet("login")]
+        [HttpPost("login")]
 
-        public async Task<IResult> Login(LoginRequest model)
-        {
-                return this.ApiResponse(await authServices.Login(model));
-        }
-        [HttpGet("users")]
-        [Authorize]
-        public async Task<IResult> GetAllUsers()
-        {
-            return this.ApiResponse(await authServices.GetAllUsers());
-        }
+        public async Task<IResult> Login(LoginRequest model) =>   this.ApiResponse(await authServices.Login(model));
 
+
+       
+        
     }
 }

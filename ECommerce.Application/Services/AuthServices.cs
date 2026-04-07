@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Text;
 using ECommerce.Application.Abstraction.IAppEncryption;
 using ECommerce.Application.Abstraction.IJwtProvider;
 using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.RRModels.Auth;
+using ECommerce.Application.RRModels.Users;
 using ECommerce.Application.Utils.Result;
+using ECommerce.Domain;
 using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
@@ -47,21 +50,12 @@ namespace ECommerce.Application.Services
             var hashedPassword = appEncryption.HashPassword(model.Password, user.Salt);
             if (hashedPassword != user.Password)
             {
-                return Result<string>.Failure("Invalid Credentials", StatusCodes.Status400BadRequest);
+               return Result<string>.Failure("Invalid Credentials", StatusCodes.Status400BadRequest);
             }
             var token = jWTrovider.GenerateToken(user);
-            return Result<string>.Success(token);
-
+          return Result<string>.Success(token);
         }
 
-        async Task<Result<IEnumerable<User>>> IAuthServices.GetAllUsers()
-        {
-            var users=await authRepository.GetAllAsync();
-            if(users is null)
-            {
-                return Result<IEnumerable<User>>.Failure("Something went wrong",StatusCodes.Status500InternalServerError);
-            }
-            return Result<IEnumerable<User>>.Success(users,"All users Fetched successfully");
-        }
+       
     }
 }

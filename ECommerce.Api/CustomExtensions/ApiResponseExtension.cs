@@ -1,46 +1,69 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Web.Http;
-
-//using System.Web.Http;
+﻿using ECommerce.Api.Controllers.Common;
 using ECommerce.Application.Utils.Result;
 using Microsoft.AspNetCore.Mvc;
+
+using System.Text.Json; // newsoft.Json for JSON serialization
+using System.Text.Json.Serialization;
+
+
 
 namespace ECommerce.Api.CustomExtensions
 {
     public static class ApiResponseExtension
     {
-        public static IResult ApiResponse<T>(this ControllerBase controller, Result<T> result)
+        public static IResult ApiResponse<T>(this ControllerBase con, Result<T> result)
         {
             return new CustomResponse<T>
             {
                 Value = result,
             };
         }
-        
-        public class CustomResponse<T>:IResult
+    }
+    public class CustomResponse<T> : IResult
+    {
+        public Result<T> Value { get; set; }
+
+      
+
+        public Task ExecuteAsync(HttpContext httpContext)
         {
-           public Result<T> Value {  get; set; }
 
-            public CustomResponse()
+            httpContext.Response.ContentType = "application/json";
+            httpContext.Response.StatusCode = Value.StatusCode;
+
+            var jsonSetting = new JsonSerializerOptions()
             {
-                
-            }
-
-            public Task ExecuteAsync(HttpContext httpContext)
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = { new JsonStringEnumConverter() }
+            };
+            var res = new ResponseModel();
+            if (Value.IsSuccess)
             {
-                httpContext.Response.ContentType = "application/json";
-                httpContext.Response.StatusCode=Value.StatusCode;
 
-                var jsonSetting = new JsonSerializerOptions()
-                {
-                    PropertyNameCaseInsensitive = true,
-                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                    Converters = {new JsonStringEnumConverter()}
-                };
-                var json=JsonSerializer.Serialize(Value,jsonSetting);
-                return httpContext.Response.WriteAsync(json);
+                //res.IsSuccess = Value.IsSuccess;
+                res.Message = Value.Message;
+                res.Data = Value.Value;
             }
+            else
+            {
+
+                res.Data = null;
+                //res.IsSuccess = false;
+                res.Message = "";
+                res.ProblemDetails = Value.ProblemDetails;
+            }
+            var json = JsonSerializer.Serialize(res, jsonSetting);
+            return httpContext.Response.WriteAsync(json);
         }
     }
+
+    public class ResponseModel
+    {
+        //public bool IsSuccess { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public object? Data { get; set; }
+        public ProblemDetails ProblemDetails { get; set; }
+    }
+
+
 }
