@@ -1,6 +1,7 @@
-﻿using ECommerce.Application.Abstraction.IServices;
+﻿using ECommerce.Api.CustomExtensions;
+using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.RRModels.Auth;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers
@@ -10,7 +11,7 @@ namespace ECommerce.Api.Controllers
     public class AuthController(IAuthServices authServices) : ControllerBase
     {
         [HttpPost("signup")]
-
+        
         public async Task<IActionResult> SignUp(SignUpRequest model)
         {
             if (ModelState.IsValid)
@@ -24,15 +25,15 @@ namespace ECommerce.Api.Controllers
 
         [HttpGet("login")]
 
-        public async Task<IActionResult> Login(LoginRequest model)
+        public async Task<IResult> Login(LoginRequest model)
         {
-            if (ModelState.IsValid)
-            {
-                return Ok(await authServices.Login(model));
-
-            }
-            return BadRequest("Something went wrong");
-
+                return this.ApiResponse(await authServices.Login(model));
+        }
+        [HttpGet("users")]
+        [Authorize]
+        public async Task<IResult> GetAllUsers()
+        {
+            return this.ApiResponse(await authServices.GetAllUsers());
         }
 
     }
