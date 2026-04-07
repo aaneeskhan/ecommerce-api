@@ -9,6 +9,7 @@ using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.RRModels.Auth;
 using ECommerce.Application.RRModels.Users;
 using ECommerce.Application.Utils.Result;
+using ECommerce.Domain;
 using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 
@@ -55,21 +56,6 @@ namespace ECommerce.Application.Services
           return Result<string>.Success(token);
         }
 
-        public async Task<Result<IEnumerable<UserResponse>>> GetUsers()
-        {
-           var res= (await authRepository.GetAllAsync()).Select(x=> new UserResponse
-            {
-                Email=x.Email,
-                PhoneNo=x.PhoneNo,
-                UserRole=x.UserRole,
-                UserStatus=x.UserStatus
-                
-            });
-         //  if( res  is null || !res.Any() || res.Count() == 0)
-            //{
-            return Result<IEnumerable<UserResponse>>.Failure("Users Not found", StatusCodes.Status404NotFound);
-            // }
-            return Result<IEnumerable<UserResponse>>.Success(res);
-        }
+       
     }
 }

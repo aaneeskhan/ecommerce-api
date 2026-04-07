@@ -8,8 +8,8 @@ using System.Text;
 
 namespace ECommerce.Application.Abstraction.IRepository
 {
-    public interface IAuthRepository:IBaseRepository<User>
+    public interface IUserRepository:IBaseRepository<User> 
     {
-       
+     
     }
 }
