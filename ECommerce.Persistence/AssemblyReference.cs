@@ -13,7 +13,7 @@ namespace ECommerce.Persistence
         {
           services.AddScoped<IAuthRepository,AuthRepository>();
     services.AddScoped<IUserRepository,UserRepository>();
-          services.AddDbContext<ECommerceContext>(options => options.UseSqlServer(configuration.GetConnectionString("ECommerceContext")));
+          services.AddDbContext<ECommerceContext>(options => options.UseSqlServer(configuration.GetConnectionString("ECommerceDbContext")));
             return services;
         }
     }
