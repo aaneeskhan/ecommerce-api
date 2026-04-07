@@ -18,53 +18,52 @@ namespace ECommerce.Api.CustomExtensions
                 Value = result,
             };
         }
+    }
+    public class CustomResponse<T> : IResult
+    {
+        public Result<T> Value { get; set; }
 
-        public class CustomResponse<T> : IResult
+      
+
+        public Task ExecuteAsync(HttpContext httpContext)
         {
-            public Result<T> Value{ get; set; }
 
+            httpContext.Response.ContentType = "application/json";
+            httpContext.Response.StatusCode = Value.StatusCode;
 
-         
-            public Task ExecuteAsync(HttpContext httpContext)
+            var jsonSetting = new JsonSerializerOptions()
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Converters = { new JsonStringEnumConverter() }
+            };
+            var res = new ResponseModel();
+            if (Value.IsSuccess)
             {
 
-                httpContext.Response.ContentType = "application/json";
-                httpContext.Response.StatusCode = Value.StatusCode;
-
-                var jsonSetting = new JsonSerializerOptions()
-                {
-                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                     Converters = { new JsonStringEnumConverter() }
-                };
-
-                var obj = new
-                {
-                    IsSuccess = Value.IsSuccess,
-                    Message = Value.Message,
-                    Data = Value.Value
-                };
-                var json = JsonSerializer.Serialize(obj, jsonSetting);
-                return httpContext.Response.WriteAsync(json);  
-
-
-                //if (result.IsSuccess)
-                //{
-                //    return Results.Json(new
-                //    {
-                //        success = true,
-                //        message = result.Message,
-                //        data = result.Value
-                //    }, statusCode: result.StatusCode);
-                //}
-                //else
-                //{
-                //    return Results.Json(new
-                //    {
-                //        success = false,
-                //        message = result.Message
-                //    }, statusCode: result.StatusCode);
-                //}
+                //res.IsSuccess = Value.IsSuccess;
+                res.Message = Value.Message;
+                res.Data = Value.Value;
             }
+            else
+            {
+
+                res.Data = null;
+                //res.IsSuccess = false;
+                res.Message = "";
+                res.ProblemDetails = Value.ProblemDetails;
+            }
+            var json = JsonSerializer.Serialize(res, jsonSetting);
+            return httpContext.Response.WriteAsync(json);
         }
     }
+
+    public class ResponseModel
+    {
+        //public bool IsSuccess { get; set; }
+        public string Message { get; set; } = string.Empty;
+        public object? Data { get; set; }
+        public ProblemDetails ProblemDetails { get; set; }
+    }
+
+
 }

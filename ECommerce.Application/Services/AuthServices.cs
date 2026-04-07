@@ -65,6 +65,10 @@ namespace ECommerce.Application.Services
                 UserStatus=x.UserStatus
                 
             });
+         //  if( res  is null || !res.Any() || res.Count() == 0)
+            //{
+            return Result<IEnumerable<UserResponse>>.Failure("Users Not found", StatusCodes.Status404NotFound);
+            // }
             return Result<IEnumerable<UserResponse>>.Success(res);
         }
     }
