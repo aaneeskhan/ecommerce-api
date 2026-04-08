@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using ECommerce.Application.Abstraction.IAppEncryption;
+using ECommerce.Application.Abstraction.IContextService;
 using ECommerce.Application.Abstraction.IJwtProvider;
 using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IServices;
@@ -11,15 +12,17 @@ using ECommerce.Application.RRModels.Users;
 using ECommerce.Application.Utils.Result;
 using ECommerce.Domain;
 using ECommerce.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json.Linq;
 
 namespace ECommerce.Application.Services
 {
-    public class AuthServices(IAuthRepository authRepository,IAppEncryption appEncryption,IJWTrovider jWTrovider) : IAuthServices
+    public class AuthService(IAuthRepository authRepository,IAppEncryption appEncryption,IJWTrovider jWTrovider,IContextService contextService) : IAuthService
     {
         
 
-        public async Task<string> SignUp(SignUpRequest model)
+        public async Task<Result<string>> SignUp(SignUpRequest model)
         {
             var salt = appEncryption.GenerateSalt();
             var hashedPassword=appEncryption.HashPassword(model.Password, salt);
@@ -35,9 +38,9 @@ namespace ECommerce.Application.Services
             var res= await authRepository.AddAsync(user);
             if(res>0)
             {
-                return "User Added successfully";
+                return Result<string>.Success("User added successfully");
             }
-            return "Something went wrong";
+            return Result<string>.Failure("Something went wrong", StatusCodes.Status400BadRequest);
         }
 
         public async Task<Result<string>> Login(LoginRequest model)
@@ -56,6 +59,31 @@ namespace ECommerce.Application.Services
           return Result<string>.Success(token);
         }
 
-        
+        [Authorize]
+        public async Task<Result<string>> ChangePassword(ChangePassword model)
+        {
+            var userId=contextService.GetId();
+            var user=await authRepository.GetByIdAsync(userId);
+            if(user is null)
+            {
+                return  Result<string>.Failure("User not found", StatusCodes.Status404NotFound);
+            }
+            var salt = appEncryption.GenerateSalt();
+            var oldPassword = appEncryption.HashPassword(model.OldPassword, user.Salt);
+            var newPassword=appEncryption.HashPassword(model.NewPassword, salt);
+            if(oldPassword!=user.Password)
+            {
+                return Result<string>.Failure("Wrong Password", StatusCodes.Status404NotFound);
+            }
+            user.Salt = salt;
+            user.Password = newPassword;
+            var isUpdated=await authRepository.UpdateAsync(user);
+            if(isUpdated>0)
+            {
+                return Result<string>.Success("password changed successfully");
+            }
+            return Result<string>.Failure("Something went wrong", StatusCodes.Status404NotFound);
+
+        }
     }
 }

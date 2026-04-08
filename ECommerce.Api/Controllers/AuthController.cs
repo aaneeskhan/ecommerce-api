@@ -15,16 +15,8 @@ namespace ECommerce.Api.Controllers
     {
         [HttpPost("signup")]
 
-        public async Task<IActionResult> SignUp(SignUpRequest model)
-        {
-            if (ModelState.IsValid)
-            {
-                return Ok(await authServices.SignUp(model));
-
-            }
-            return BadRequest("Something went wrong");
-            
-        }
+        public async Task<IActionResult> SignUp(SignUpRequest model) => this.ApiResponse(await authServices.SignUp(model));
+        
 
         [HttpPost("login")]
 
@@ -33,12 +25,8 @@ namespace ECommerce.Api.Controllers
 
         [HttpPost("change-password")]
 
-        public async Task<IResult> ChangePassword(ChangePassword model)
-        {
-            if (ModelState.IsValid)
-            {
-                return this.ApiResponse(await )
-            }
-        }
+        public async Task<IResult> ChangePassword(ChangePassword model)=> this.ApiResponse(await authServices.ChangePassword(model));
+            
+        
     }
 }

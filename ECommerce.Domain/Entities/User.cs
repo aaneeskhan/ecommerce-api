@@ -14,6 +14,7 @@ namespace ECommerce.Domain.Entities
         public string ConfirmationCode { get; set; }=string.Empty;
         public UserStatus UserStatus { get; set; }=UserStatus.Active;
         public UserRole UserRole { get; set; } = UserRole.Customer;
+        public ICollection<Address> Addresses { get; set; }
 
     }
 }

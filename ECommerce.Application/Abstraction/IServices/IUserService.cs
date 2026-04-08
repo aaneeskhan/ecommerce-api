@@ -15,5 +15,8 @@ namespace ECommerce.Application.Abstraction.IServices
         Task<Result<UserResponse>> GetUserById(Guid id);
         Task<Result<IEnumerable<UserResponse>>> GetUserByRole(string userRole);
         Task<Result<IEnumerable<UserResponse>>> GetUserByEmail(string email);
+
+
+       
     }
 }

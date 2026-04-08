@@ -11,7 +11,7 @@ namespace ECommerce.Application.Abstraction.IServices
 {
     public interface IAuthServices
     {
-        Task<string> SignUp(SignUpRequest model);
+        Task<Result<string>> SignUp(SignUpRequest model);
         Task<Result<string>> Login(LoginRequest model);
         Task<Result<string>> ChangePassword(ChangePassword model);
         

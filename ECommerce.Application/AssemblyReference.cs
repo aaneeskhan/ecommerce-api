@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ECommerce.Application.Abstraction.IContextService;
 using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -11,8 +12,9 @@ namespace ECommerce.Application
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
-            services.AddScoped<IAuthServices,AuthServices>();
+            services.AddScoped<IAuthService,AuthService>();
             services.AddScoped<IUserService,UserService>();
+            services.AddScoped<IAddressService,AddressService>();
             return services;
         }
     }

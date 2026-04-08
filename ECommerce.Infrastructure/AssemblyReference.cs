@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Abstraction.IAppEncryption;
+using ECommerce.Application.Abstraction.IContextService;
 using ECommerce.Application.Abstraction.IJwtProvider;
 using ECommerce.Infrastructure.Encryption;
 using ECommerce.Infrastructure.JWTProvider;
@@ -12,6 +13,7 @@ namespace ECommerce.Infrastructure
           {
             services.AddScoped<IAppEncryption, AppEncryption>();
             services.AddScoped<IJWTrovider, JWTProvider.JWTProvider>();
+            services.AddScoped<IContextService, ContextService.ContextService>();
             return services;
           }
     }
