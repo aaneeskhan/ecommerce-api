@@ -23,6 +23,7 @@ namespace ECommerce.Api
 
             services.AddCors(options =>
             {
+                
                 options.AddPolicy("ECommercePolicy", builder =>
                 {
                     builder.AllowAnyOrigin()
