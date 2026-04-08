@@ -3,6 +3,7 @@ using ECommerce.Api.CustomExtensions;
 using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.RRModels.Auth;
 using ECommerce.Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,7 @@ namespace ECommerce.Api.Controllers
 
 
         [HttpPost("change-password")]
-
+        [Authorize]
         public async Task<IResult> ChangePassword(ChangePassword model)=> this.ApiResponse(await authServices.ChangePassword(model));
             
         
