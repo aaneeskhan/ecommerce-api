@@ -1,8 +1,5 @@
 ﻿using ECommerce.Api.CustomExtensions;
 using ECommerce.Application.Abstraction.IServices;
-using ECommerce.Application.Services;
-using ECommerce.Domain;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.Api.Controllers

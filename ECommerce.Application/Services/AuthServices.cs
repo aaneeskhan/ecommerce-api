@@ -56,6 +56,6 @@ namespace ECommerce.Application.Services
           return Result<string>.Success(token);
         }
 
-       
+        
     }
 }

@@ -1,9 +1,10 @@
-﻿using ECommerce.Application.RRModels.Users;
-using ECommerce.Application.Utils.Result;
-using ECommerce.Domain;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ECommerce.Application.RRModels.Users;
+using ECommerce.Application.Utils.Result;
+using ECommerce.Domain;
+using ECommerce.Domain.Entities;
 
 namespace ECommerce.Application.Abstraction.IServices
 {

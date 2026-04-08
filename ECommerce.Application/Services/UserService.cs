@@ -4,10 +4,7 @@ using ECommerce.Application.RRModels.Users;
 using ECommerce.Application.Utils.Result;
 using ECommerce.Domain;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Text;
 
 namespace ECommerce.Application.Services
 {
@@ -39,6 +36,10 @@ namespace ECommerce.Application.Services
                 UserRole= x.UserRole,
                 UserStatus=x.UserStatus
             }).ToList();
+            if (userList is null || userList.Count == 0)
+            {
+                return Result<IEnumerable<UserResponse>>.Failure("No match found", StatusCodes.Status404NotFound);
+            }
             return Result<IEnumerable<UserResponse>>.Success(userList);
         }
 
@@ -52,6 +53,10 @@ namespace ECommerce.Application.Services
                 UserRole = user.UserRole,
                 UserStatus = user.UserStatus
             };
+            if (user is null)
+            {
+                return Result<UserResponse>.Failure("No match found", StatusCodes.Status404NotFound);
+            }
             return Result<UserResponse>.Success(userResponse);
         }
 
@@ -66,6 +71,10 @@ namespace ECommerce.Application.Services
                 UserRole=role,
                 UserStatus=x.UserStatus
             }).ToList();
+            if (userList is null || userList.Count == 0)
+            {
+                return Result<IEnumerable<UserResponse>>.Failure("No match found", StatusCodes.Status404NotFound);
+            }
             return Result<IEnumerable<UserResponse>>.Success(userList);
         }
     }

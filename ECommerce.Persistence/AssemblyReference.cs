@@ -12,6 +12,7 @@ namespace ECommerce.Persistence
         public static IServiceCollection AddPersistenceServices(this IServiceCollection services,IConfiguration configuration)
         {
           services.AddScoped<IAuthRepository,AuthRepository>();
+          services.AddScoped<IUserRepository,UserRepository>();
             services.AddDbContext<ECommerceContext>(options => options.UseSqlServer(configuration.GetConnectionString("ECommerceDbContext")));
             return services;
         }
