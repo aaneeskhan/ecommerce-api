@@ -15,7 +15,7 @@ namespace ECommerce.Api.Controllers
     {
         [HttpPost("signup")]
 
-        public async Task<IActionResult> SignUp(SignUpRequest model) => this.ApiResponse(await authServices.SignUp(model));
+        public async Task<IResult> SignUp(SignUpRequest model) => this.ApiResponse(await authServices.SignUp(model));
         
 
         [HttpPost("login")]

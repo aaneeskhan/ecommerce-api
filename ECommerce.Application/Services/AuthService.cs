@@ -18,7 +18,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ECommerce.Application.Services
 {
-    public class AuthService(IAuthRepository authRepository,IAppEncryption appEncryption,IJWTrovider jWTrovider,IContextService contextService) : IAuthService
+    public class AuthService(IAuthRepository authRepository,IAppEncryption appEncryption,IJWTrovider jWTrovider,IContextService contextService) : IAuthServices
     {
         
 
@@ -59,7 +59,8 @@ namespace ECommerce.Application.Services
           return Result<string>.Success(token);
         }
 
-        [Authorize]
+      
+
         public async Task<Result<string>> ChangePassword(ChangePassword model)
         {
             var userId=contextService.GetId();
@@ -68,13 +69,16 @@ namespace ECommerce.Application.Services
             {
                 return  Result<string>.Failure("User not found", StatusCodes.Status404NotFound);
             }
-            var salt = appEncryption.GenerateSalt();
+           
             var oldPassword = appEncryption.HashPassword(model.OldPassword, user.Salt);
-            var newPassword=appEncryption.HashPassword(model.NewPassword, salt);
+
             if(oldPassword!=user.Password)
             {
-                return Result<string>.Failure("Wrong Password", StatusCodes.Status404NotFound);
+                return Result<string>.Failure("Wrong Password", StatusCodes.Status409Conflict);
             }
+
+            var salt = appEncryption.GenerateSalt();
+            var newPassword=appEncryption.HashPassword(model.NewPassword, salt);
             user.Salt = salt;
             user.Password = newPassword;
             var isUpdated=await authRepository.UpdateAsync(user);
@@ -82,7 +86,7 @@ namespace ECommerce.Application.Services
             {
                 return Result<string>.Success("password changed successfully");
             }
-            return Result<string>.Failure("Something went wrong", StatusCodes.Status404NotFound);
+            return Result<string>.Failure("Something went wrong", StatusCodes.Status500InternalServerError);
 
         }
     }
