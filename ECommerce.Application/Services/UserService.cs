@@ -77,5 +77,25 @@ namespace ECommerce.Application.Services
             }
             return Result<IEnumerable<UserResponse>>.Success(userList);
         }
+
+        public async Task<Result<string>> UpdateUserStatus(UserStatus userStatus, Guid userId)
+        {
+            var user=await userRepository.GetByIdAsync(userId);
+            if(user is null)
+            {
+                return Result<string>.Failure("No user found", StatusCodes.Status404NotFound);
+            }
+
+            user.UserStatus= userStatus;
+            var returnValue=await userRepository.UpdateAsync(user);
+
+
+            if(returnValue>0)
+            {
+                return Result<string>.Success(message: "User Status updated Successfully");
+            }
+
+            return Result<string>.Failure( "Something went wrong",StatusCodes.Status500InternalServerError);
+        }
     }
 }

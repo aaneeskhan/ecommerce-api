@@ -10,8 +10,10 @@ namespace ECommerce.Application.Abstraction.IServices
     {
         Task<Result<AddressResponse>> AddAddress(AddressRequest model);
         Task<Result<AddressResponse>> UpdateAddress(UpdateAddressRequest model);
-        Task<Result<AddressResponse>> GetAddressById(AddressRequest model);
-        Task<Result<IEnumerable< AddressResponse>>> GetAddressByUserId(AddressRequest model);
-        Task<Result<AddressResponse>> DeleteById(AddressRequest model);
+        Task<Result<AddressResponse>> GetAddressById(Guid id);
+        Task<Result<IEnumerable< AddressResponse>>> GetAddressByUserId();
+        Task<Result<AddressResponse>> DeleteById(Guid id);
+        Task<Result<int>> DeleteAddresses(IEnumerable<Guid> ids);
+        Task<Result<int>> DeleteAllAddresses();
     }
 }

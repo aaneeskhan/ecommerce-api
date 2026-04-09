@@ -50,6 +50,11 @@ namespace ECommerce.Application.Services
             {
                 return Result<string>.Failure("Invalid Credentials", StatusCodes.Status400BadRequest);
             }
+
+            if(user.UserStatus!= UserStatus.Active)
+            {
+                return Result<string>.Failure("User is not active", StatusCodes.Status403Forbidden);
+            }
             var hashedPassword = appEncryption.HashPassword(model.Password, user.Salt);
             if (hashedPassword != user.Password)
             {
