@@ -26,9 +26,9 @@ namespace ECommerce.Api.Controllers
         [Authorize]
         public async Task<IResult> GetUserByEmail(string email) => this.ApiResponse(await userService.GetUserByEmail(email));
 
-        [HttpPut("update/{userStatus,id}")]
+        [HttpPut("update/{userStatus}/{id}")]
         [Authorize]
-        public async Task<IResult> GetUserByEmail(UserStatus userStatus,Guid id) => this.ApiResponse(await userService.UpdateUserStatus(userStatus,id));
+        public async Task<IResult> UpdateUserStatus(UserStatus userStatus,Guid id) => this.ApiResponse(await userService.UpdateUserStatus(userStatus,id));
 
 
 

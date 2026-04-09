@@ -8,9 +8,12 @@ namespace ECommerce.Api.Controllers
 {
     public class AddressController(IAddressService addressService) : ControllerBase
     {
+        [HttpPost("")]
         public async Task<IResult> CreateAddress(AddressRequest model)
         {
             return this.ApiResponse(await addressService.AddAddress(model));
         }
+
+
     }
 }
