@@ -14,6 +14,7 @@ namespace ECommerce.Application.Services
         {
            var res= (await userRepository.GetAllAsync()).Select(x=> new UserResponse
             {
+                Id = x.Id,
                 Email=x.Email,
                 PhoneNo=x.PhoneNo,
                 UserRole=x.UserRole,
