@@ -21,7 +21,7 @@ namespace ECommerce.Application.Services
             {
                 return Result<AddressResponse>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
             }
-            bool isExist = await adddressRepository.IsExistAsync(x => x.AddressLine == model.AddressLine && x.State == model.State && x.City == model.City);
+            bool isExist = await adddressRepository.IsExistAsync(x => x.AddressLine == model.AddressLine && x.Landmark == model.Landmark && x.State == model.State && x.City == model.City && x.Id==userId);
             if (isExist)
             {
                 return Result<AddressResponse>.Failure("Address already exists", StatusCodes.Status400BadRequest);
