@@ -14,6 +14,7 @@ namespace ECommerce.Application.Services
         {
            var res= (await userRepository.GetAllAsync()).Select(x=> new UserResponse
             {
+                Id=x.Id,
                 Email=x.Email,
                 PhoneNo=x.PhoneNo,
                 UserRole=x.UserRole,
@@ -31,7 +32,8 @@ namespace ECommerce.Application.Services
             var users = await userRepository.FindByAsync(x => x.Email.StartsWith(email));
             var userList=users.Select(x => new UserResponse
             {
-                Email=x.Email,
+                Id = x.Id,
+                Email =x.Email,
                 PhoneNo=x.PhoneNo,
                 UserRole= x.UserRole,
                 UserStatus=x.UserStatus
@@ -48,7 +50,8 @@ namespace ECommerce.Application.Services
             var user = await userRepository.GetByIdAsync(id);
             UserResponse userResponse = new UserResponse
             {
-                Email=user.Email,   
+                Id = x.Id,
+                Email =user.Email,   
                 PhoneNo = user.PhoneNo,
                 UserRole = user.UserRole,
                 UserStatus = user.UserStatus
@@ -66,7 +69,8 @@ namespace ECommerce.Application.Services
             var users = await userRepository.FindByAsync(x => x.UserRole == role);
             var userList=users.Select(x => new UserResponse
             {
-                Email=x.Email,
+                Id = x.Id,
+                Email =x.Email,
                 PhoneNo=x.PhoneNo,
                 UserRole=role,
                 UserStatus=x.UserStatus

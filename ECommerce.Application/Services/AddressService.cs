@@ -54,14 +54,34 @@ namespace ECommerce.Application.Services
             return Result<AddressResponse>.Failure("Failed to add", StatusCodes.Status500InternalServerError);
         }
 
-        public Task<Result<int>> DeleteAddresses(IEnumerable<Guid> ids)
+        public async Task<Result<int>> DeleteAddresses(IEnumerable<Guid> ids)
         {
-            throw new NotImplementedException();
+            var isDeleted=await adddressRepository.DeleteRangeAsync(ids);
+            if (isDeleted > 0)
+            {
+                return Result<int>.Success(message: "Addresses Deleted successfully");
+            }
+            return Result<int>.Failure("Something Went wrong", StatusCodes.Status500InternalServerError);
         }
 
-        public Task<Result<int>> DeleteAllAddresses()
+        public async Task<Result<int>> DeleteAllAddresses()
         {
-            throw new NotImplementedException();
+            var userId = contextService.GetId();
+            if (userId == Guid.Empty)
+            {
+                return Result<int>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
+            }
+            var addresses=await adddressRepository.FindByAsync(x => x.Id == userId);
+            if(addresses is null)
+            {
+                return Result<int>.Failure("No addresses found", StatusCodes.Status404NotFound);
+            }
+            var isDeleted=await adddressRepository.DeleteRangeAsync(addresses);
+            if(isDeleted > 0)
+            {
+                return Result<int>.Success(message:"Addresses Deleted successfully");
+            }
+            return Result<int>.Failure("Something Went wrong", StatusCodes.Status500InternalServerError);
         }
 
         public async Task<Result<AddressResponse>> DeleteById(Guid id)
@@ -69,7 +89,7 @@ namespace ECommerce.Application.Services
             var address=await adddressRepository.GetByIdAsync(id);
             if(address is null)
             {
-                return Result<AddressResponse>.Failure("No address foung", StatusCodes.Status404NotFound);
+                return Result<AddressResponse>.Failure("No address found", StatusCodes.Status404NotFound);
             }
             var isDeleted=await adddressRepository.DeleteAsync(id);
             if(isDeleted > 0)
@@ -84,7 +104,7 @@ namespace ECommerce.Application.Services
                     Pincode = address.Pincode,
                     ContactNo = address.ContactNo,
                     UserId = address.UserId
-                }, message: "Address added successfully", statusCode: StatusCodes.Status200OK);
+                }, message: "Address Deleted successfully", statusCode: StatusCodes.Status200OK);
             }
             return Result<AddressResponse>.Failure("Something Went wrong", StatusCodes.Status500InternalServerError);
         }
@@ -104,7 +124,7 @@ namespace ECommerce.Application.Services
                     Pincode = address.Pincode,
                     ContactNo = address.ContactNo,
                     UserId = address.UserId
-                }, message: "Address added successfully", statusCode: StatusCodes.Status200OK);
+                }, message: "Address Fetched successfully", statusCode: StatusCodes.Status200OK);
             }
 
             return Result<AddressResponse>.Failure("Something went wrong", StatusCodes.Status500InternalServerError);
@@ -131,15 +151,46 @@ namespace ECommerce.Application.Services
                     Pincode = x.Pincode,
                     ContactNo = x.ContactNo,
                     UserId = x.UserId
-                }), message: "Address added successfully", statusCode: StatusCodes.Status200OK);
+                }), message: "Addresses Fetched successfully", statusCode: StatusCodes.Status200OK);
             }
 
             return Result<IEnumerable<AddressResponse>>.Failure("Something went wrong", StatusCodes.Status500InternalServerError);
         }
 
-        public Task<Result<AddressResponse>> UpdateAddress(UpdateAddressRequest model)
+        public async Task<Result<AddressResponse>> UpdateAddress(UpdateAddressRequest model)
         {
-            throw new NotImplementedException();
+            var address = await adddressRepository.GetByIdAsync(model.Id);
+            if (address is null)
+            {
+                return Result<AddressResponse>.Failure("No Address found matching such id", StatusCodes.Status401Unauthorized);
+            }
+
+            address.Landmark = model.Landmark;
+            address.City = model.City;
+            address.AddressLine = model.AddressLine;
+            address.ContactNo = model.ContactNo;
+            address.State = model.State;
+            address.Pincode = model.Pincode;
+
+            var isUpdated=await adddressRepository.UpdateAsync(address);
+
+            if(isUpdated > 0)
+            {
+                var addressResponse=new AddressResponse()
+                {
+                    Landmark = address.Landmark,
+                    City = address.City,
+                    AddressLine = address.AddressLine,
+                    ContactNo= address.ContactNo,
+                    State = address.State,
+                    Pincode = address.Pincode,
+                    Id = address.Id,
+                    UserId=address.UserId
+                };
+                return Result<AddressResponse>.Success(value: addressResponse, message: "Address updated Successfully");
+            }
+
+            return Result<AddressResponse>.Failure("Something went wrong", StatusCodes.Status500InternalServerError);
         }
     }
 }
