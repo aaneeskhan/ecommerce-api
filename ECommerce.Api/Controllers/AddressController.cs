@@ -12,5 +12,11 @@ namespace ECommerce.Api.Controllers
         {
             return this.ApiResponse(await addressService.AddAddress(model));
         }
+
+        [HttpPost("{ids}")]
+        public async Task<IResult> DeleteAddress(IEnumerable<Guid> ids)
+        {
+            return this.ApiResponse(await addressService.DeleteAddresses(ids));
+        }
     }
 }
