@@ -50,7 +50,7 @@ namespace ECommerce.Application.Services
             var user = await userRepository.GetByIdAsync(id);
             UserResponse userResponse = new UserResponse
             {
-                Id = x.Id,
+                Id = user.Id,
                 Email =user.Email,   
                 PhoneNo = user.PhoneNo,
                 UserRole = user.UserRole,

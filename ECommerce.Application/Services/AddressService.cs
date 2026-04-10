@@ -21,11 +21,16 @@ namespace ECommerce.Application.Services
             {
                 return Result<AddressResponse>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
             }
-            bool isExist = await adddressRepository.IsExistAsync(x => x.AddressLine == model.AddressLine && x.Landmark == model.Landmark && x.State == model.State && x.City == model.City && x.Id==userId);
-            if (isExist)
+            
+            var addresses =await adddressRepository.FindByAsync(x=> x.UserId == userId);
+            var isAny=addresses.Any(x=>x.Landmark==model.Landmark && x.City==model.City && x.State==model.State && x.AddressLine==model.AddressLine);
+
+            if(isAny)
             {
-                return Result<AddressResponse>.Failure("Address already exists", StatusCodes.Status400BadRequest);
+                return Result<AddressResponse>.Failure("Address already exists", StatusCodes.Status409Conflict);
             }
+
+
             var address = new Address
             {
                 AddressLine = model.AddressLine,
@@ -71,7 +76,7 @@ namespace ECommerce.Application.Services
             {
                 return Result<int>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
             }
-            var addresses=await adddressRepository.FindByAsync(x => x.Id == userId);
+            var addresses=await adddressRepository.FindByAsync(x => x.UserId == userId);
             if(addresses is null)
             {
                 return Result<int>.Failure("No addresses found", StatusCodes.Status404NotFound);
@@ -138,10 +143,10 @@ namespace ECommerce.Application.Services
             {
                 return Result<IEnumerable<AddressResponse>>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
             }
-            var addresses = await adddressRepository.FindByAsync(x=>x.Id==userId);
+            var addresses = await adddressRepository.FindByAsync(x=>x.UserId==userId);
             if (addresses is not null)
             {
-                return Result<IEnumerable<AddressResponse>>.Success(value: addresses.Select(x => new AddressResponse
+                var allAddresses = addresses.Select(x => new AddressResponse
                 {
                     Id = x.Id,
                     AddressLine = x.AddressLine,
@@ -151,7 +156,8 @@ namespace ECommerce.Application.Services
                     Pincode = x.Pincode,
                     ContactNo = x.ContactNo,
                     UserId = x.UserId
-                }), message: "Addresses Fetched successfully", statusCode: StatusCodes.Status200OK);
+                });
+                return Result<IEnumerable<AddressResponse>>.Success(value: allAddresses, message: "Addresses Fetched successfully", statusCode: StatusCodes.Status200OK);
             }
 
             return Result<IEnumerable<AddressResponse>>.Failure("Something went wrong", StatusCodes.Status500InternalServerError);

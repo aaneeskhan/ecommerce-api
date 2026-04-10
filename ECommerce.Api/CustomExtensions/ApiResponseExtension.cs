@@ -52,8 +52,8 @@ namespace ECommerce.Api.CustomExtensions
                 res.Message = "";
                 res.ProblemDetails = Value.ProblemDetails;
             }
-            var json = JsonSerializer.Serialize(res, jsonSetting);
-            return httpContext.Response.WriteAsync(json);
+            var json = JsonSerializer.Serialize(Value, jsonSetting);
+            return  httpContext.Response.WriteAsync(json);
         }
     }
 
