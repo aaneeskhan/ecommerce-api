@@ -8,7 +8,7 @@ namespace ECommerce.Application.Abstraction.IStorageService
 {
     public interface IStorageService
     {
-        Task<string> SaveFileAsync(IFormFile file);
+        Task<(string,string)> SaveFileAsync(IFormFile file);
 
         Task<IEnumerable<string>> SaveFilesAsync(IFormFileCollection files);
 

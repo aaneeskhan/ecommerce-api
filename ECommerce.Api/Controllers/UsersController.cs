@@ -27,10 +27,5 @@ namespace ECommerce.Api.Controllers
 
         [HttpPut("{userStatus}/{id}")]
         public async Task<IResult> UpdateUserStatus(UserStatus userStatus,Guid id) => this.ApiResponse(await userService.UpdateUserStatus(userStatus,id));
-
-
-
-        
-
     }
 }

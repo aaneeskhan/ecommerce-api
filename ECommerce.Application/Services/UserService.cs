@@ -82,12 +82,12 @@ namespace ECommerce.Application.Services
             return Result<IEnumerable<UserResponse>>.Success(userList);
         }
 
-        public async Task<Result<string>> UpdateUserStatus(UserStatus userStatus, Guid userId)
+        public async Task<Result<IEnumerable<UserResponse>>> UpdateUserStatus(UserStatus userStatus, Guid userId)
         {
             var user=await userRepository.GetByIdAsync(userId);
             if(user is null)
             {
-                return Result<string>.Failure("No user found", StatusCodes.Status404NotFound);
+                return Result<IEnumerable<UserResponse>>.Failure("No user found", StatusCodes.Status404NotFound);
             }
 
             user.UserStatus= userStatus;
@@ -96,10 +96,19 @@ namespace ECommerce.Application.Services
 
             if(returnValue>0)
             {
-                return Result<string>.Success(message: "User Status updated Successfully");
+                var res = (await userRepository.GetAllAsync()).Select(x => new UserResponse
+                {
+                    Id = x.Id,
+                    Email = x.Email,
+                    PhoneNo = x.PhoneNo,
+                    UserRole = x.UserRole,
+                    UserStatus = x.UserStatus
+
+                });
+                return Result<IEnumerable<UserResponse>>.Success(res,message: "User Status updated Successfully");
             }
 
-            return Result<string>.Failure( "Something went wrong",StatusCodes.Status500InternalServerError);
+            return Result<IEnumerable<UserResponse>>.Failure( "Something went wrong",StatusCodes.Status500InternalServerError);
         }
     }
 }

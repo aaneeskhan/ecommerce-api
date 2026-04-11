@@ -7,10 +7,11 @@ namespace ECommerce.Api.Controllers
 {
     [Route("api/[controller]")]
   
-    public class HomeController : ControllerBase
+    public class HomeController(IWebHostEnvironment env) : ControllerBase
     {
         public IActionResult Get()
         {
+             var path = env.WebRootPath;
             return Ok("");
             //ActionResult result = new OkObjectResult("Welcome to the E-Commerce API!");
             //IActionResult res= new BadRequestObjectResult("Bad Request");
