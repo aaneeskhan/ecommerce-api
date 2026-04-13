@@ -16,6 +16,7 @@ namespace ECommerce.Application
             services.AddScoped<ICategoryService,CategoryService>();
             services.AddScoped<IUserService,UserService>();
             services.AddScoped<IAddressService,AddressService>();
+            services.AddScoped<ICategoryService,CategoryService>();
             return services;
         }
     }

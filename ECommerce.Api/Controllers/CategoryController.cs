@@ -10,10 +10,10 @@ namespace ECommerce.Api.Controllers
     [ApiController]
     public class CategoryController(ICategoryService categoryService) : ControllerBase
     {
-        [HttpPost]
+        [HttpPost("")]
         public async Task<IResult> CreateCategory(CategoryRequest model)
         {
-                return   this.ApiResponse(await categoryService.CreateCategory(model));
+            return this.ApiResponse(await categoryService.CreateCategory(model));
         }
     }
 }

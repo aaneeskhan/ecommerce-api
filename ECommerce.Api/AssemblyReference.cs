@@ -13,13 +13,12 @@ namespace ECommerce.Api
 {
     public static class AssemblyReference
     {
-        public static IServiceCollection AddApiServices(this IServiceCollection services,IConfiguration configuration, IWebHostEnvironment environment)
+        public static IServiceCollection AddApiServices(this IServiceCollection services,IConfiguration configuration,IWebHostEnvironment environment)
         {
-            
             services.AddControllers();
             services.AddApplicationServices();
             services.AddPersistenceServices(configuration);
-            services.AddInfrastructureServices(environment.WebRootPath, environment.IsDevelopment());
+            services.AddInfrastructureServices(environment.WebRootPath,environment.IsDevelopment(),configuration);
             services.AddHttpContextAccessor();
 
             services.AddCors(options =>

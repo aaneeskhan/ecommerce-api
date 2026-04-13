@@ -4,12 +4,8 @@ using System.Text;
 
 namespace ECommerce.Domain.Entities
 {
-    public class Product : BaseEntity
+    public class Product:BaseEntity
     {
-        public string MyProperty { get; set; }
+        public int MyProperty { get; set; }
     }
 }
-
-// Category main menu
-// Subcategory sub menu
-// product
