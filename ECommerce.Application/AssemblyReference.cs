@@ -13,6 +13,7 @@ namespace ECommerce.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddScoped<IAuthServices,AuthService>();
+            services.AddScoped<ICategoryService,CategoryService>();
             services.AddScoped<IUserService,UserService>();
             services.AddScoped<IAddressService,AddressService>();
             return services;

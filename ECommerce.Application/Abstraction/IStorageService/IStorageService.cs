@@ -12,7 +12,7 @@ namespace ECommerce.Application.Abstraction.IStorageService
 
         Task<IEnumerable<string>> SaveFilesAsync(IFormFileCollection files);
 
-        Task<IEnumerable<string>> SaveFilesAsync(List<IFormFile> files);
+        //Task<IEnumerable<string>> SaveFilesAsync(List<IFormFile> files);
 
         Task<(string,string)> UpdateFileAsync(IFormFile file, string existingFileName);
 
