@@ -5,18 +5,20 @@ using ECommerce.Application.Abstraction.IStorageService;
 using ECommerce.Infrastructure.Encryption;
 using ECommerce.Infrastructure.JWTProvider;
 using ECommerce.Infrastructure.StorageService.LocalStorageService;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ECommerce.Infrastructure
 {
     public static class AssemblyReference
     {
-          public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
+          public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,string webRootPath,bool isDevelopment,IConfiguration configuration)
           {
             services.AddScoped<IAppEncryption, AppEncryption>();
             services.AddScoped<IJWTrovider, JWTProvider.JWTProvider>();
             services.AddScoped<IContextService, ContextService.ContextService>();
             services.AddScoped<IStorageService, StorageService.LocalStorageService.StorageService>();
+            services.AddSingleton<IStorageService>(new StorageService.LocalStorageService.StorageService(webRootPath));
             return services;
           }
     }
