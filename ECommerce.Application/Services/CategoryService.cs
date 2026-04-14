@@ -37,11 +37,41 @@ namespace ECommerce.Application.Services
                     Name=category.Name,
                     Id=category.Id,
                     Description=category.Description,
-                    FilePath=category.FilePath
+                    FilePath=category.FilePath,
+                    IsActive = category.IsActive,
                 };
                 return  Result<CategoryResponse>.Success(categoryResponse);
             }
             return Result<CategoryResponse>.Failure("Something went Wrong", StatusCodes.Status500InternalServerError);
+        }
+
+        public Task<Result<IEnumerable<CategoryResponse>>> FindCategoryByName(string catName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result<IEnumerable<CategoryResponse>>> GetActiveCategories(bool isActive)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result<IEnumerable<CategoryResponse>>> GetAllCategories()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result<CategoryResponse>> GetById(Guid id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Result<CategoryResponse>> UpdateCategory(UpdateCategoryRequest model)
+        {
+            if(model.File is not null)
+            {
+
+            }
+            return default;
         }
     }
 }

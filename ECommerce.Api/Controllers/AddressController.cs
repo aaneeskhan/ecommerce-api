@@ -26,6 +26,7 @@ namespace ECommerce.Api.Controllers
         }
 
 
+
         [HttpDelete("{ids}")]
         public async Task<IResult> DeleteAdresses(IEnumerable<Guid> ids)
         {

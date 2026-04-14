@@ -10,5 +10,7 @@ namespace ECommerce.Application.RRModels.Category
         public string Name { get; set; }
         public string FilePath { get; set; }
         public string Description { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }

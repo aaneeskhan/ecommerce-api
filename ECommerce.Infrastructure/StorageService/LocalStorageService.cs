@@ -1,5 +1,6 @@
 ﻿using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.Abstraction.IStorageService;
+using ECommerce.Application.RRModels.Files;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -28,32 +29,46 @@ namespace ECommerce.Infrastructure.StorageService
             var virtualPath = GetVirtualPath(newFileName);
             return (virtualPath, newFileName);
         }
-
-
-        public Task<string> DeleteFileAsync(string fileName)
+      
+        public async Task<(IEnumerable<FileResponse>,int)> SaveFilesAsync(IFormFileCollection files)
         {
-            throw new NotImplementedException();
+            int totalFileUploaded = 0;
+            List<FileResponse> filesResponse = new List<FileResponse>();
+            foreach (var file in files)
+            {
+                (string filePath, string fileName) = await SaveFileAsync(file);
+                filesResponse.Add(new FileResponse
+                {
+                    FileName = fileName,
+                    FilePath = filePath,
+                });
+                totalFileUploaded++;
+            }
+            return (filesResponse, totalFileUploaded);
         }
 
-        public Task<int> DeleteFilesAsync(IEnumerable<string> fileNames)
+        public void DeleteFileAsync(string fileName)
         {
-            throw new NotImplementedException();
+            string filePath = Path.Combine(GetPhysicalPath, fileName);
+            File.Delete(filePath);
         }
 
-    
-
-        public Task<IEnumerable<string>> SaveFilesAsync(IFormFileCollection files)
+        public int DeleteFilesAsync(IEnumerable<string> fileNames)
         {
-            throw new NotImplementedException();
+            int totalFilesDeleted = 0;
+            foreach (var fileName in fileNames)
+            {
+                string filePath = Path.Combine(GetPhysicalPath, fileName);
+                File.Delete(filePath);
+                totalFilesDeleted++;
+            }
+            return totalFilesDeleted;
         }
 
-        public Task<IEnumerable<string>> SaveFilesAsync(List<IFormFile> files)
-        {
-            throw new NotImplementedException();
-        }
 
         public Task<(string, string)> UpdateFileAsync(IFormFile file, string existingFileName)
         {
+          
             throw new NotImplementedException();
         }
 
@@ -65,6 +80,13 @@ namespace ECommerce.Infrastructure.StorageService
 
         // img src="http://logichubss.com/files/tawheed.png"/>
         private string GetVirtualPath(string FileName) => "/Files/" + FileName;// /files/tawheed.jpg
+
+        public Task<IEnumerable<string>> SaveFilesAsync(IFormCollection files)
+        {
+            throw new NotImplementedException();
+        }
+
+     
 
         #endregion
     }
