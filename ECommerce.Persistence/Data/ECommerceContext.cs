@@ -32,6 +32,7 @@ namespace ECommerce.Persistence.Data
 
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public DbSet<Address> Addresses { get; set; }
     }

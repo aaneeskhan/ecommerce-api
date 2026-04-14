@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using ECommerce.Application.RRModels.files;
 using Microsoft.AspNetCore.Http;
 
 namespace ECommerce.Application.Abstraction.IStorageService
@@ -8,10 +9,9 @@ namespace ECommerce.Application.Abstraction.IStorageService
     public interface IStorageService
     {
         Task<(string, string)> SaveFileAsync(IFormFile file);
-        Task<IEnumerable<string>> SaveFilesAsync(IFormCollection files);
-        Task<IEnumerable<string>> SaveFilesAsync(List<IFormFile> files);
+        Task<(IEnumerable<FileResponse>,int)> SaveFilesAsync(IFormFileCollection files);
         Task<(string,string)> UpdateFileAsync(IFormFile file,string existingFileName);
-        Task<string> DeleteFileAsync(string fileName);
-        Task<int> DeleteFilesAsync(IEnumerable<string> fileNames);
+        void DeleteFileAsync(string fileName);
+        int DeleteFilesAsync(IEnumerable<string> fileNames);
     }
 }
