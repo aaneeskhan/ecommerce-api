@@ -15,5 +15,33 @@ namespace ECommerce.Api.Controllers
         {
             return this.ApiResponse(await categoryService.CreateCategory(model));
         }
+        [HttpGet("")]
+        public async Task<IResult> GetAllCategories()
+        {
+            return this.ApiResponse(await categoryService.GetAllCategories());
+        }
+        [HttpGet("{isActive:bool}")]
+        public async Task<IResult> GetAllCategories(bool isActive)
+        {
+            return this.ApiResponse(await categoryService.GetActiveCategories(isActive));
+        }
+
+        [HttpGet("{id:Guid}")]
+        public async Task<IResult> GetCategoryById(Guid id)
+        {
+            return this.ApiResponse(await categoryService.GetCategoryById(id));
+        }
+
+        [HttpGet("{name}")]
+        public async Task<IResult> FindCategorybyName(string name)
+        {
+            return this.ApiResponse(await categoryService.FindCategorybyName(name));
+        }
+
+        [HttpPut("")]
+        public async Task<IResult> UpdateCategory(UpdateCategoryRequest updateCategoryRequest)
+        {
+            return this.ApiResponse(await categoryService.UpdateCategory(updateCategoryRequest));
+        }
     }
 }

@@ -18,7 +18,8 @@ namespace ECommerce.Persistence.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning));
+            optionsBuilder.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning))
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
         override protected void OnModelCreating(ModelBuilder modelBuilder)
