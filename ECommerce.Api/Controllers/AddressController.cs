@@ -47,11 +47,17 @@ namespace ECommerce.Api.Controllers
             return this.ApiResponse(await addressService.GetAddressById(id));
         }
 
+        [HttpGet("user/{id")]
+        public async Task<IResult> GetAddressByUserId(Guid id)
+        {
+            return this.ApiResponse(await addressService.GetAddressByUserId(id));
+        }
+
 
         [HttpGet("")]
-        public async Task<IResult> GetAddressByUserId()
+        public async Task<IResult> GetAddressByLogedInUserId()
         {
-            return this.ApiResponse(await addressService.GetAddressByUserId());
+            return this.ApiResponse(await addressService.GetAddressesOfLogenInUserId());
         }
 
 
