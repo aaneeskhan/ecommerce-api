@@ -139,10 +139,10 @@ namespace ECommerce.Application.Services
 
              public async Task<Result<IEnumerable<AddressResponse>>> GetAddressByUserId(Guid userId)
         {
-            if (userId == Guid.Empty)
-            {
-                return Result<IEnumerable<AddressResponse>>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
-            }
+            //if (userId == Guid.Empty)
+            //{
+            //    return Result<IEnumerable<AddressResponse>>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
+            //}
             var addresses = await adddressRepository.FindByAsync(x => x.UserId == userId);
             if (addresses is not null)
             {
