@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace ECommerce.Application.RRModels.Files
+namespace ECommerce.Application.RRModels.files
 {
     public class FileResponse
     {
-        public string FileName { get; set; }
         public string FilePath { get; set; }
+        public string FileName { get; set; }
     }
 }

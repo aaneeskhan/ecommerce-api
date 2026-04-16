@@ -57,7 +57,7 @@ namespace ECommerce.Api.Controllers
         [HttpGet("")]
         public async Task<IResult> GetAddressByLogedInUserId()
         {
-            return this.ApiResponse(await addressService.GetAddressesOfLogenInUserId());
+            return this.ApiResponse(await addressService.GetAddressOfLoggedInUser());
         }
 
 

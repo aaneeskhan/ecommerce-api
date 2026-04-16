@@ -15,6 +15,8 @@ namespace ECommerce.Persistence
           services.AddScoped<IUserRepository,UserRepository>();
           services.AddScoped<IAdddressRepository,AddressRepository>();
           services.AddScoped<ICategoryRepository,CategoryRepository>();
+          services.AddScoped<IProductRepository,ProductRepository>();
+          services.AddScoped<IProductDetailsRepository,ProductDetailsRepository>();
             services.AddDbContext<ECommerceContext>(options => options.UseSqlServer(configuration.GetConnectionString("ECommerceDbContext")));
             return services;
         }

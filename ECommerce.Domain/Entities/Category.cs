@@ -12,7 +12,5 @@ namespace ECommerce.Domain.Entities
         public string FilePath { get; set; }
         public string FileName { get; set; }
         public ICollection<Product> Products { get; set; }
-
-        public ICollection<Product> Products{ get; set; }
     }
 }

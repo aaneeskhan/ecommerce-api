@@ -10,7 +10,7 @@ namespace ECommerce.Application.Abstraction.IServices
     public interface IProductService
     {
         Task<Result<ProductResponse>> AddProduct(ProductRequest model);
-        Task<Result<IEnumerable<ProductResponse>>> GetAllProducts();
+        Task<Result<IEnumerable<ProductResponse>>> GetProductsByCategoryId(Guid catId);
         Task<Result<ProductResponse>> GetProductById(Guid id);
 
 
