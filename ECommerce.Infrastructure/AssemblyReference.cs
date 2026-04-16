@@ -4,6 +4,7 @@ using ECommerce.Application.Abstraction.IJwtProvider;
 using ECommerce.Application.Abstraction.IStorageService;
 using ECommerce.Infrastructure.Encryption;
 using ECommerce.Infrastructure.JWTProvider;
+using ECommerce.Infrastructure.StorageService;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,7 +17,7 @@ namespace ECommerce.Infrastructure
             services.AddScoped<IAppEncryption, AppEncryption>();
             services.AddScoped<IJWTrovider, JWTProvider.JWTProvider>();
             services.AddScoped<IContextService, ContextService.ContextService>();
-            services.AddSingleton<IStorageService>(new StorageService.LocalStorageService(webRootPath));
+            services.AddSingleton<IStorageService>(new LocalStorageService(webRootPath));
             return services;
           }
     }

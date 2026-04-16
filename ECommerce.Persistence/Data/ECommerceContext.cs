@@ -15,11 +15,11 @@ namespace ECommerce.Persistence.Data
         {
 
         }
-      
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.ConfigureWarnings(warnings => warnings.Ignore(RelationalEventId.PendingModelChangesWarning))
-                  .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking); 
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         }
 
         override protected void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,15 +32,12 @@ namespace ECommerce.Persistence.Data
   
 
 
+        public DbSet<User> Users { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductDetails> ProductDetails { get; set; }
+        public DbSet<AppFiles> AppFiles { get; set; }
         public DbSet<Category> Categories { get; set; }
 
-        public DbSet<Product> Products { get; set; }
-        public DbSet<ProductDetails> ProductDetails{ get; set; }
-        public DbSet<AppFiles> AppFiles { get; set; }
-        public DbSet<User> Users { get; set; }
-
         public DbSet<Address> Addresses { get; set; }
-
-
     }
 }

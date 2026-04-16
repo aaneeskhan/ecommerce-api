@@ -135,15 +135,15 @@ namespace ECommerce.Application.Services
             return Result<AddressResponse>.Failure("Something went wrong", StatusCodes.Status500InternalServerError);
 
         }
-        
 
-             public async Task<Result<IEnumerable<AddressResponse>>> GetAddressByUserId(Guid userId)
+        public async Task<Result<IEnumerable<AddressResponse>>> GetAddressOfLoggedInUser()
         {
-            //if (userId == Guid.Empty)
-            //{
-            //    return Result<IEnumerable<AddressResponse>>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
-            //}
-            var addresses = await adddressRepository.FindByAsync(x => x.UserId == userId);
+            var userId = contextService.GetId();
+            if (userId == Guid.Empty)
+            {
+                return Result<IEnumerable<AddressResponse>>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
+            }
+            var addresses = await adddressRepository.FindByAsync(x=>x.UserId==userId);
             if (addresses is not null)
             {
                 var allAddresses = addresses.Select(x => new AddressResponse
@@ -163,12 +163,11 @@ namespace ECommerce.Application.Services
             return Result<IEnumerable<AddressResponse>>.Failure("Something went wrong", StatusCodes.Status500InternalServerError);
         }
 
-        public async Task<Result<IEnumerable<AddressResponse>>> GetAddressesOfLogenInUserId()
+        public async Task<Result<IEnumerable<AddressResponse>>> GetAddressByUserId(Guid userId)
         {
-            var userId = contextService.GetId();
             if (userId == Guid.Empty)
             {
-                return Result<IEnumerable<AddressResponse>>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
+                return Result<IEnumerable<AddressResponse>>.Failure("No Corresponding users address found", StatusCodes.Status401Unauthorized);
             }
             var addresses = await adddressRepository.FindByAsync(x=>x.UserId==userId);
             if (addresses is not null)

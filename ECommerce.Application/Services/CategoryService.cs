@@ -38,40 +38,140 @@ namespace ECommerce.Application.Services
                     Id=category.Id,
                     Description=category.Description,
                     FilePath=category.FilePath,
-                    IsActive = category.IsActive,
+                    isActive=category.IsActive,
                 };
                 return  Result<CategoryResponse>.Success(categoryResponse);
             }
             return Result<CategoryResponse>.Failure("Something went Wrong", StatusCodes.Status500InternalServerError);
         }
 
-        public Task<Result<IEnumerable<CategoryResponse>>> FindCategoryByName(string catName)
+
+        public async Task<Result<IEnumerable<CategoryResponse>>> GetAllCategories()
         {
-            throw new NotImplementedException();
+            var categories=await categoryRepository.GetAllAsync();
+            if(categories is null)
+            {
+                return Result<IEnumerable<CategoryResponse>>.Failure("Something went Wrong or no categories found", StatusCodes.Status404NotFound);
+            }
+            var categoryResponses=new List<CategoryResponse>();
+            foreach (var category in categories) 
+            {
+                var categoryResponse = new CategoryResponse()
+                {
+                    Name = category.Name,
+                    Id = category.Id,
+                    Description = category.Description,
+                    FilePath = category.FilePath,
+                    isActive = category.IsActive
+                };
+                categoryResponses.Add(categoryResponse);
+            }
+            return Result<IEnumerable<CategoryResponse>>.Success(categoryResponses);
         }
 
-        public Task<Result<IEnumerable<CategoryResponse>>> GetActiveCategories(bool isActive)
+
+        public async Task<Result<CategoryResponse>> GetCategoryById(Guid id)
         {
-            throw new NotImplementedException();
+            var category = await categoryRepository.GetByIdAsync(id);
+            if (category is null)
+            {
+                return Result<CategoryResponse>.Failure("Something went Wrong or no corresponding category found", StatusCodes.Status404NotFound);
+            }
+
+            var categoryResponse = new CategoryResponse()
+            {
+                Name = category.Name,
+                Id = category.Id,
+                Description = category.Description,
+                FilePath = category.FilePath,
+                isActive = category.IsActive
+            };
+                
+            return Result<CategoryResponse>.Success(categoryResponse);
         }
 
-        public Task<Result<IEnumerable<CategoryResponse>>> GetAllCategories()
+        public async Task<Result<IEnumerable<CategoryResponse>>> FindCategorybyName(string catName)
         {
-            throw new NotImplementedException();
+            var categories = await categoryRepository.FindByAsync(x => x.Name.StartsWith(catName));
+            if (categories is null)
+            {
+                return Result<IEnumerable<CategoryResponse>>.Failure("Something went Wrong or no corresponding categories found", StatusCodes.Status404NotFound);
+            }
+            var categoryResponses = new List<CategoryResponse>();
+            foreach (var category in categories)
+            {
+                var categoryResponse = new CategoryResponse()
+                {
+                    Name = category.Name,
+                    Id = category.Id,
+                    Description = category.Description,
+                    FilePath = category.FilePath,
+                    isActive = category.IsActive
+                };
+                categoryResponses.Add(categoryResponse);
+            }
+            return Result<IEnumerable<CategoryResponse>>.Success(categoryResponses);
         }
 
-        public Task<Result<CategoryResponse>> GetById(Guid id)
+        public async Task<Result<IEnumerable<CategoryResponse>>> GetActiveCategories(bool isActice)
         {
-            throw new NotImplementedException();
+            var categories=await categoryRepository.FindByAsync(x=>x.IsActive==isActice);
+            if (categories is null)
+            {
+                return Result<IEnumerable<CategoryResponse>>.Failure("Something went Wrong or no corresponding categories found", StatusCodes.Status404NotFound);
+            }
+            var categoryResponses = new List<CategoryResponse>();
+            foreach (var category in categories)
+            {
+                var categoryResponse = new CategoryResponse()
+                {
+                    Name = category.Name,
+                    Id = category.Id,
+                    Description = category.Description,
+                    FilePath = category.FilePath,
+                    isActive = category.IsActive
+                };
+                categoryResponses.Add(categoryResponse);
+            }
+            return Result<IEnumerable<CategoryResponse>>.Success(categoryResponses);
         }
 
-        public Task<Result<CategoryResponse>> UpdateCategory(UpdateCategoryRequest model)
+
+
+        public async Task<Result<CategoryResponse>> UpdateCategory(UpdateCategoryRequest model)
         {
+            var category = await categoryRepository.GetByIdAsync(model.Id);
+            if (category is null)
+            {
+                return Result<CategoryResponse>.Failure("Something went Wrong or no corresponding category found", StatusCodes.Status404NotFound);
+            }
+            string filePath=category.FilePath;
+            string fileName=category.FileName;
             if(model.File is not null)
             {
-
+                (filePath,fileName)=await storageService.UpdateFileAsync(model.File, fileName);
             }
-            return default;
+
+            category.Name = model.Name;
+            category.Description= model.Description;
+            category.FilePath= filePath;
+            category.FileName = fileName;
+
+            var res=await categoryRepository.UpdateAsync(category);
+
+            if (res > 0)
+            {
+                var categoryResponse = new CategoryResponse()
+                {
+                    Name = category.Name,
+                    Id = category.Id,
+                    Description = category.Description,
+                    FilePath = category.FilePath,
+                    isActive = category.IsActive,
+                };
+                return Result<CategoryResponse>.Success(categoryResponse);
+            }
+            return Result<CategoryResponse>.Failure("Something went Wrong", StatusCodes.Status500InternalServerError);
         }
     }
 }

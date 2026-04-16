@@ -19,23 +19,17 @@ namespace ECommerce.Domain
 
     public enum Units
     {
-        Pieces=1,
-
-        Gram=2,
-
-        KG=3,
-
-        Litre=4,
-
-        Dozen=5,
-
-        Meter=6,
+       Piece=1,
+       Gram= 2,
+       KG=3,
+       Litre=4,
+       Dozen=5,
+       Meter=6
     }
 
     public enum AppModule
     {
-        User = 1,
-
-        Product = 2,
+        User=1,
+        Product=2,
     }
 }
