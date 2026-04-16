@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ECommerce.Persistence.Migrations
 {
     [DbContext(typeof(ECommerceContext))]
-    [Migration("20260415044521_prod_prodDetails_appFiles")]
-    partial class prod_prodDetails_appFiles
+    [Migration("20260416053809_init_mig")]
+    partial class init_mig
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -240,7 +240,7 @@ namespace ECommerce.Persistence.Migrations
                         {
                             Id = new Guid("019d237c-86bf-78c1-aa52-ef2091ce5c25"),
                             ConfirmationCode = "",
-                            CreatedOn = new DateTimeOffset(new DateTime(2026, 4, 15, 10, 15, 16, 941, DateTimeKind.Unspecified).AddTicks(5245), new TimeSpan(0, 5, 30, 0, 0)),
+                            CreatedOn = new DateTimeOffset(new DateTime(2026, 4, 16, 11, 8, 5, 290, DateTimeKind.Unspecified).AddTicks(6184), new TimeSpan(0, 5, 30, 0, 0)),
                             Email = "sania@gmail.com",
                             Password = "$2a$11$YOtZkxWhHmwRR4XiiwA1PO8WGZyTnzJXue6ZFesAsJiB8a3bzbXTi",
                             PhoneNo = "9797893466",
