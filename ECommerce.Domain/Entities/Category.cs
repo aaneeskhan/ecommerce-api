@@ -11,6 +11,7 @@ namespace ECommerce.Domain.Entities
         public bool IsActive { get; set; } = true;
         public string FilePath { get; set; }
         public string FileName { get; set; }
+        public ICollection<Product> Products { get; set; }
 
         
     }

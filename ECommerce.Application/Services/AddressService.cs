@@ -136,12 +136,38 @@ namespace ECommerce.Application.Services
 
         }
 
-        public async Task<Result<IEnumerable<AddressResponse>>> GetAddressByUserId()
+        public async Task<Result<IEnumerable<AddressResponse>>> GetAddressOfLoggedInUser()
         {
             var userId = contextService.GetId();
             if (userId == Guid.Empty)
             {
                 return Result<IEnumerable<AddressResponse>>.Failure("unauthorized user please login again", StatusCodes.Status401Unauthorized);
+            }
+            var addresses = await adddressRepository.FindByAsync(x=>x.UserId==userId);
+            if (addresses is not null)
+            {
+                var allAddresses = addresses.Select(x => new AddressResponse
+                {
+                    Id = x.Id,
+                    AddressLine = x.AddressLine,
+                    Landmark = x.Landmark,
+                    City = x.City,
+                    State = x.State,
+                    Pincode = x.Pincode,
+                    ContactNo = x.ContactNo,
+                    UserId = x.UserId
+                });
+                return Result<IEnumerable<AddressResponse>>.Success(value: allAddresses, message: "Addresses Fetched successfully", statusCode: StatusCodes.Status200OK);
+            }
+
+            return Result<IEnumerable<AddressResponse>>.Failure("Something went wrong", StatusCodes.Status500InternalServerError);
+        }
+
+        public async Task<Result<IEnumerable<AddressResponse>>> GetAddressByUserId(Guid userId)
+        {
+            if (userId == Guid.Empty)
+            {
+                return Result<IEnumerable<AddressResponse>>.Failure("No Corresponding users address found", StatusCodes.Status401Unauthorized);
             }
             var addresses = await adddressRepository.FindByAsync(x=>x.UserId==userId);
             if (addresses is not null)
