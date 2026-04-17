@@ -15,11 +15,14 @@ namespace ECommerce.Api.Controllers
         {
             return this.ApiResponse(await categoryService.CreateCategory(model));
         }
+        
         [HttpGet("")]
         public async Task<IResult> GetAllCategories()
         {
             return this.ApiResponse(await categoryService.GetAllCategories());
         }
+       
+        
         [HttpGet("{isActive:bool}")]
         public async Task<IResult> GetAllCategories(bool isActive)
         {

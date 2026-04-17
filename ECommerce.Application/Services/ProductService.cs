@@ -8,6 +8,7 @@ using ECommerce.Application.Utils.Result;
 using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 
@@ -69,30 +70,40 @@ namespace ECommerce.Application.Services
 
         public async Task<Result<IEnumerable<ProductResponse>>> GetProductsByCategoryId(Guid catId)
         {
-            var products=await productRepository.FindByAsync(x=>x.CategoryId == catId);
+
+            var products = await productRepository.GetProductsByCategoryId(catId);
+
             if (products is null)
             {
                 return Result<IEnumerable<ProductResponse>>.Failure("No Products found", StatusCodes.Status404NotFound);
             }
-            List<ProductResponse> list = new List<ProductResponse>();
-            foreach (var product in products)
-            {
-                ProductResponse productResponse = new ProductResponse();
-                var productDetails = await productDetailsRepository.FirstOrDefaultAsync(x => x.ProductId == product.Id);
-                productResponse.Id = product.Id;
-                productResponse.Title = product.Title;
-                productResponse.Price = productDetails.Price;
-                productResponse.CategoryId = product.CategoryId;
-                productResponse.FilePath = productDetails.FilePath;
-                productResponse.FileName = productDetails.FileName;
-                productResponse.Brand = product.Brand;
-                productResponse.ProductDetailId = productDetails.Id;
-                productResponse.Description = product.Description;
-                productResponse.Units = product.Units;
-                productResponse.Discount = productDetails.Discount;
-                list.Add(productResponse);
-            }
-            return Result<IEnumerable< ProductResponse>>.Success(list);
+            return Result<IEnumerable<ProductResponse>>.Success(products);
+
+          
+            //var products=await productRepository.FindByAsync(x=>x.CategoryId == catId);
+            //if (products is null)
+            //{
+            //    return Result<IEnumerable<ProductResponse>>.Failure("No Products found", StatusCodes.Status404NotFound);
+            //}
+            //List<ProductResponse> list = new List<ProductResponse>();
+            //foreach (var product in products)
+            //{
+            //    ProductResponse productResponse = new ProductResponse();
+            //    var productDetails = await productDetailsRepository.FirstOrDefaultAsync(x => x.ProductId == product.Id);
+            //    productResponse.Id = product.Id;
+            //    productResponse.Title = product.Title;
+            //    productResponse.Price = productDetails.Price;
+            //    productResponse.CategoryId = product.CategoryId;
+            //    productResponse.FilePath = productDetails.FilePath;
+            //    productResponse.FileName = productDetails.FileName;
+            //    productResponse.Brand = product.Brand;
+            //    productResponse.ProductDetailId = productDetails.Id;
+            //    productResponse.Description = product.Description;
+            //    productResponse.Units = product.Units;
+            //    productResponse.Discount = productDetails.Discount;
+            //    list.Add(productResponse);
+            //}
+
         }
 
         public async Task<Result<ProductResponse>> GetProductById(Guid id)
