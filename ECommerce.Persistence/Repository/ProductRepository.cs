@@ -25,12 +25,19 @@ namespace ECommerce.Persistence.Repository
                                                             ON P.Id = PD.ProductId
                                                             where P.CategoryId = {categoryId}").ToListAsync();
             return products;
+        }
 
-            //context.Database.SqlQueryRaw<IEnumerable<ProductResponse>>(@"SELECT CategoryId, Title, Brand, [Description], Units, ProductId, Price, Discount, PD.FileName, PD.FilePath 
-            //                                                FROM Products P
-            //                                                INNER JOIN ProductDetails PD
-            //                                                ON P.Id = PD.ProductId
-            //                                                where P.CategoryId = @categoryId", categoryId);
+     
+
+        public async Task<int> InsertProductWithDetails(ProductWithDetails model)
+        {
+            string query = $@"INSERT INTO Products VALUES('{model.ProductId}', '{model.ProductRequest.Title}', '{model.ProductRequest.Brand}','{model.ProductRequest.Description}', {(int)model.ProductRequest.Units} , '{model.ProductRequest.CategoryId}', '{model.CreatedOn}')";
+
+            //query += $@" INSERT INTO ProductDetails VALUES('{Guid.CreateVersion7()}', {model.ProductRequest.Price}, {model.ProductRequest.Discount}, '{model.FilePath}', '{model.FileName}', '{model.ProductId}', '{DateTimeOffset.UtcNow}')";
+
+      
+
+           return await context.Database.ExecuteSqlAsync($@"{query}");
         }
     }
 }

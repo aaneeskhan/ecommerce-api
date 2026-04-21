@@ -17,5 +17,7 @@ namespace ECommerce.Api.Controllers
         [HttpGet("{catId:guid}")]
         public async Task<IResult> GetProductsByCategoryId(Guid catId)
                                        => this.ApiResponse(await productService.GetProductsByCategoryId(catId));
+
+
     }
 }

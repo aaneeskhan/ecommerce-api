@@ -8,6 +8,7 @@ namespace ECommerce.Application.Abstraction.IRepository
 {
     public interface IProductRepository:IBaseRepository<Product>
     {
+        Task<int> InsertProductWithDetails(ProductWithDetails model);
         Task<IEnumerable<ProductResponse>> GetProductsByCategoryId(Guid id);
     }
 }
