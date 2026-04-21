@@ -18,16 +18,31 @@ namespace ECommerce.Persistence.Repository
             //  context.Database.fro
             //context.Database.ExecuteSqlRaw("SELECT * FROM Products WHERE CategoryId = {0}", id); 
 
-          
-           var products =  await context.Database.SqlQuery<ProductResponse>($@"SELECT P.Id, CategoryId, PD.Id AS ProductDetailId, Title, Brand, [Description], Units, Price, Discount, PD.FileName, PD.FilePath 
+
+            var products = await context.Database.SqlQuery<ProductResponse>($@"SELECT P.Id, CategoryId, PD.Id AS ProductDetailId, Title, Brand, [Description], Units, Price, Discount, PD.FileName, PD.FilePath 
                                                             FROM Products P
                                                             INNER JOIN ProductDetails PD
                                                             ON P.Id = PD.ProductId
                                                             where P.CategoryId = {categoryId}").ToListAsync();
+
+
             return products;
         }
 
-     
+        public async Task<IEnumerable<ProductResponseWithJsonResult>> GetProductsByCatId(Guid categoryId)
+        {
+            var products = await context.Database.SqlQuery<ProductResponseWithJsonResult>($@"SELECT P.Id, P.Title, P.Brand, P.[Description], P.Units, P.CategoryId, P.CreatedOn,
+	                                                                       (
+		                                                                        SELECT PD.Id AS ProductDetailId, Price, Discount, FilePath, [FileName]  FROM ProductDetails PD
+		                                                                        WHERE PD.ProductId = P.Id
+		                                                                        FOR JSON PATH --, WITHOUT_ARRAY_WRAPPER
+	                                                                        ) AS ProductDetailsJson
+
+                                                                            FROM Products P
+                                                                            WHERE P.CategoryId =  {categoryId}").ToListAsync();
+
+            return products;
+        }
 
         public async Task<int> InsertProductWithDetails(ProductWithDetails model)
         {

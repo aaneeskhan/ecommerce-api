@@ -35,6 +35,7 @@ namespace ECommerce.Application.Services
                 CreatedOn = DateTimeOffset.UtcNow
             };
 
+
            var returnValue =  await productRepository.InsertProductWithDetails(productWithDetails);
 
             if(returnValue > 0)
@@ -171,6 +172,17 @@ namespace ECommerce.Application.Services
         public Task<Result<string>> DeleteProduct(Guid id)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Result<IEnumerable<ProductResponseWithJsonResult>>> GetProductsByCatId(Guid catId)
+        {
+            var products = await productRepository.GetProductsByCatId(catId);
+
+            if (products is null)
+            {
+                return Result<IEnumerable<ProductResponseWithJsonResult>>.Failure("No Products found", StatusCodes.Status404NotFound);
+            }
+            return Result<IEnumerable<ProductResponseWithJsonResult>>.Success(products);
         }
     }
 }

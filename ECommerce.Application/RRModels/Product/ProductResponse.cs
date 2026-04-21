@@ -1,9 +1,11 @@
-﻿using ECommerce.Domain;
+﻿using ECommerce.Application.RRModels.ProductDetails;
+using ECommerce.Domain;
 using ECommerce.Domain.Entities;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json;
 
 namespace ECommerce.Application.RRModels.Product
 {
@@ -16,6 +18,7 @@ namespace ECommerce.Application.RRModels.Product
         public Units Units { get; set; }
         public Guid CategoryId { get; set; }
 
+      
         public decimal Price { get; set; }
         public int Discount { get; set; }
         public string   FilePath { get; set; }
@@ -24,4 +27,24 @@ namespace ECommerce.Application.RRModels.Product
 
         public Guid ProductDetailId { get; set; }
     }
+
+  
+    public class ProductResponseWithJsonResult {
+        public Guid Id { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Brand { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public Units Units { get; set; }
+        public Guid CategoryId { get; set; }
+
+        public DateTimeOffset CreatedOn { get; set; }
+
+        public string? ProductDetailsJson { get; set; }
+
+
+        [NotMapped]
+        public List<ProductDetailsResponse> ProductDetails  =>
+            string.IsNullOrEmpty(ProductDetailsJson) ? null : JsonSerializer.Deserialize<List<ProductDetailsResponse>>(ProductDetailsJson);
+    }
+
 }

@@ -12,6 +12,7 @@ namespace ECommerce.Application.Abstraction.IServices
         Task<Result<ProductResponse>> AddProduct(ProductRequest model);
         // 
         Task<Result<IEnumerable<ProductResponse>>> GetProductsByCategoryId(Guid catId); // Get all Products by Category Id including Product Details the old details
+        Task<Result<IEnumerable<ProductResponseWithJsonResult>>> GetProductsByCatId(Guid catId); // Get all Products by Category Id including Product Details the old details
         Task<Result<ProductResponse>> GetProductById(Guid id);// Get all Products by Id
 
         Task<Result<ProductResponse>> UpdateProduct(Guid id, ProductRequest model);
