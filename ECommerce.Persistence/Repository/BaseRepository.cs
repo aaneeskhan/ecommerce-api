@@ -11,16 +11,14 @@ namespace ECommerce.Persistence.Repository
 {
     public class BaseRepository<T>(ECommerceContext context):IBaseRepository<T> where T : BaseEntity, new()
     {
-        public async Task<int> AddAsync(T entity)
+        public async Task AddAsync(T entity)
         {
             await context.AddAsync(entity);
-            return await context.SaveChangesAsync();
         }
 
-        public async Task<int> AddRAngeAsync(IEnumerable<T> entities)
+        public async Task AddRAngeAsync(IEnumerable<T> entities)
         {
             await context.AddRangeAsync(entities);
-            return await context.SaveChangesAsync();
         }
 
         public async Task<int> CountAsync(Expression<Func<T, bool>> expression)
@@ -28,30 +26,27 @@ namespace ECommerce.Persistence.Repository
             return await Task.Run(() => context.Set<T>().Count(expression));
         }
 
-        public async Task<int> DeleteAsync(T entity)
+        public async Task DeleteAsync(T entity)
         {
             await Task.Run(() => context.Remove(entity));
-            return await context.SaveChangesAsync();
 
         }
 
-        public async Task<int> DeleteAsync(Guid id)
+        public async Task DeleteAsync(Guid id)
         {
             var entity = new T()
             {
                 Id = id
             };
             await Task.Run(() => context.Remove(entity));
-            return await context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteRangeAsync(IEnumerable<T> entities)
+        public async Task DeleteRangeAsync(IEnumerable<T> entities)
         {
             await Task.Run(() => context.RemoveRange(entities));
-            return await context.SaveChangesAsync();
         }
 
-        public async Task<int> DeleteRangeAsync(IEnumerable<Guid> ids)
+        public async Task DeleteRangeAsync(IEnumerable<Guid> ids)
         {
             var models = new List<T>();
             foreach (var id in ids)
@@ -64,7 +59,6 @@ namespace ECommerce.Persistence.Repository
             }
             ;
             await Task.Run(() => context.RemoveRange(models));
-            return await context.SaveChangesAsync();
         }
 
         public async Task<IQueryable<T>> FindByAsync(Expression<Func<T, bool>> expression)
@@ -97,16 +91,14 @@ namespace ECommerce.Persistence.Repository
             return await Task.Run(() => context.Set<T>().LastOrDefault(expression));
         }
 
-        public async Task<int> UpdateAsync(T entity)
+        public async Task UpdateAsync(T entity)
         {
             await Task.Run(() => context.Update(entity));
-            return await context.SaveChangesAsync();
         }
 
-        public async Task<int> UpdateRangeAsync(IEnumerable<T> entities)
+        public async Task UpdateRangeAsync(IEnumerable<T> entities)
         {
             await Task.Run(() => context.UpdateRange(entities));
-            return await context.SaveChangesAsync();
         }
 
     }

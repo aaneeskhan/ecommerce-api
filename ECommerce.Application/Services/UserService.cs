@@ -1,5 +1,6 @@
 ﻿using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IServices;
+using ECommerce.Application.Abstraction.IUnitOfWork;
 using ECommerce.Application.RRModels.Users;
 using ECommerce.Application.Utils.Result;
 using ECommerce.Domain;
@@ -8,7 +9,7 @@ using System.Data;
 
 namespace ECommerce.Application.Services
 {
-    public class UserService(IUserRepository userRepository) : IUserService
+    public class UserService(IUserRepository userRepository ,IUnitOfWork unitOfWork) : IUserService
     {
          public async Task<Result<IEnumerable<UserResponse>>> GetUsers()
         {
@@ -91,10 +92,10 @@ namespace ECommerce.Application.Services
             }
 
             user.UserStatus= userStatus;
-            var returnValue=await userRepository.UpdateAsync(user);
+            await userRepository.UpdateAsync(user);
+            var returnValue = await unitOfWork.SaveChangeAsync();
 
-
-            if(returnValue>0)
+            if (returnValue>0)
             {
                 return Result<string>.Success(message: "User Status updated Successfully");
             }

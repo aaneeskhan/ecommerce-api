@@ -7,6 +7,7 @@ using ECommerce.Application.Abstraction.IContextService;
 using ECommerce.Application.Abstraction.IJwtProvider;
 using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IServices;
+using ECommerce.Application.Abstraction.IUnitOfWork;
 using ECommerce.Application.RRModels.Auth;
 using ECommerce.Application.RRModels.Users;
 using ECommerce.Application.Utils.Result;
@@ -18,7 +19,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ECommerce.Application.Services
 {
-    public class AuthService(IAuthRepository authRepository,IAppEncryption appEncryption,IJWTrovider jWTrovider,IContextService contextService) : IAuthServices
+    public class AuthService(IAuthRepository authRepository,IAppEncryption appEncryption,IJWTrovider jWTrovider,IContextService contextService,IUnitOfWork unitOfWork) : IAuthServices
     {
         
 
@@ -35,8 +36,9 @@ namespace ECommerce.Application.Services
                 Salt=salt,
                 Password=hashedPassword
             };
-            var res= await authRepository.AddAsync(user);
-            if(res>0)
+             await authRepository.AddAsync(user);
+            var res= await unitOfWork.SaveChangeAsync();
+            if (res>0)
             {
                 return Result<string>.Success("User added successfully");
             }
@@ -86,8 +88,9 @@ namespace ECommerce.Application.Services
             var newPassword=appEncryption.HashPassword(model.NewPassword, salt);
             user.Salt = salt;
             user.Password = newPassword;
-            var isUpdated=await authRepository.UpdateAsync(user);
-            if(isUpdated>0)
+            await authRepository.UpdateAsync(user);
+            var returnValue= await unitOfWork.SaveChangeAsync();
+            if (returnValue > 0)
             {
                 return Result<string>.Success("password changed successfully");
             }

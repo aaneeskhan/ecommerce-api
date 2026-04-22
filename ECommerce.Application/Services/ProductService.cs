@@ -1,6 +1,7 @@
 ﻿using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.Abstraction.IStorageService;
+using ECommerce.Application.Abstraction.IUnitOfWork;
 using ECommerce.Application.RRModels.Category;
 using ECommerce.Application.RRModels.Product;
 using ECommerce.Application.RRModels.Users;
@@ -15,96 +16,104 @@ using System.Text;
 namespace ECommerce.Application.Services
 {
     public class ProductService(IProductRepository productRepository, IProductDetailsRepository productDetailsRepository,
-                                IStorageService storageService) : IProductService
+                                IStorageService storageService, IUnitOfWork unitOfWork) : IProductService
     {
         public async Task<Result<ProductResponse>> AddProduct(ProductRequest model)
         {
 
-            if(model.File is null || model.File.Length == 0)
-            {
-                return Result<ProductResponse>.Failure("Product file is required", StatusCodes.Status400BadRequest);
-            }
+            //if(model.File is null || model.File.Length == 0)
+            //{
+            //    return Result<ProductResponse>.Failure("Product file is required", StatusCodes.Status400BadRequest);
+            //}
 
-            (string filePath, string fileName) = await storageService.SaveFileAsync(model.File);
-            ProductWithDetails productWithDetails = new ProductWithDetails()
+            //(string filePath, string fileName) = await storageService.SaveFileAsync(model.File);
+            //ProductWithDetails productWithDetails = new ProductWithDetails()
+            //{
+            //    ProductId = Guid.CreateVersion7(),
+            //    ProductRequest = model,
+            //    FilePath = filePath,
+            //    FileName = fileName,
+            //    CreatedOn = DateTimeOffset.UtcNow
+            //};
+
+          
+
+            //var returnValue =  await productRepository.InsertProductWithDetails(productWithDetails);
+
+            //if(returnValue > 0)
+            //{
+            //    var productResponse = new ProductResponse()
+            //    {
+            //        Id = productWithDetails.ProductId,
+            //        Title = model.Title,
+            //        Description = model.Description,
+            //        Brand = model.Brand,
+            //        Units = model.Units,
+            //        CategoryId = model.CategoryId,
+            //        Discount = model.Discount,
+            //        Price = model.Price,
+            //        FilePath = filePath,
+            //        FileName = fileName
+            //    };
+            //    return Result<ProductResponse>.Success(productResponse);
+            //}
+            //return Result<ProductResponse>.Failure("Something went Wrong", StatusCodes.Status500InternalServerError);
+
+
+            var product = new Product()
             {
-                ProductId = Guid.CreateVersion7(),
-                ProductRequest = model,
-                FilePath = filePath,
-                FileName = fileName,
-                CreatedOn = DateTimeOffset.UtcNow
+                Title = model.Title,
+                Brand = model.Brand,
+                Description = model.Description,
+                Units = model.Units,
+                CategoryId = model.CategoryId
             };
 
-
-           var returnValue =  await productRepository.InsertProductWithDetails(productWithDetails);
-
-            if(returnValue > 0)
+            var productDetails = new ProductDetails
             {
-                var productResponse = new ProductResponse()
+                Price = model.Price,
+                Discount = model.Discount,
+                ProductId = product.Id,
+            };
+            using var transaction = unitOfWork.BeginTransaction();
+            // productDetails.Product = product;
+             await productRepository.AddAsync(product);
+
+           
+                (string filePath, string fileName) = await storageService.SaveFileAsync(model.File);
+                productDetails.FilePath = filePath;
+                productDetails.FileName = fileName;
+
+                await productDetailsRepository.AddAsync(productDetails);
+
+              var returnValue = await unitOfWork.SaveChangeAsync();
+
+            if (returnValue > 0)
                 {
-                    Id = productWithDetails.ProductId,
-                    Title = model.Title,
-                    Description = model.Description,
-                    Brand = model.Brand,
-                    Units = model.Units,
-                    CategoryId = model.CategoryId,
-                    Discount = model.Discount,
-                    Price = model.Price,
-                    FilePath = filePath,
-                    FileName = fileName
-                };
-                return Result<ProductResponse>.Success(productResponse);
+
+                    transaction.Commit();
+                var productResponse = new ProductResponse()
+                    {
+                        Id = product.Id,
+                        Title = product.Title,
+                        Description = product.Description,
+                        Brand = product.Brand,
+                        Units = product.Units,
+                        CategoryId = product.CategoryId,
+                        Discount = productDetails.Discount,
+                        Price = productDetails.Price,
+                        ProductDetailId = productDetails.Id,
+                        FilePath = filePath,
+                        FileName = fileName
+                    };
+                    return Result<ProductResponse>.Success(productResponse);
+                }
+            else
+            {
+                transaction.Rollback();
             }
+            
             return Result<ProductResponse>.Failure("Something went Wrong", StatusCodes.Status500InternalServerError);
-
-
-            //var product = new Product()
-            //{
-            //    Title = model.Title,
-            //    Brand = model.Brand,
-            //    Description = model.Description,
-            //    Units = model.Units,
-            //    CategoryId = model.CategoryId
-            //};
-
-            //var productDetails = new ProductDetails
-            //{
-            //    Price = model.Price,
-            //    Discount = model.Discount,
-            //    ProductId = product.Id,
-            //};
-
-            //// productDetails.Product = product;
-            // var res = await productRepository.AddAsync(product);
-
-            // if (res > 0)
-            // {
-            //   (string filePath, string fileName) =  await storageService.SaveFileAsync(model.File);
-            //     productDetails.FilePath= filePath;
-            //     productDetails.FileName= fileName;
-
-            // var returnValue = await productDetailsRepository.AddAsync(productDetails);
-
-            //     if (returnValue > 0)
-            //     {
-            //         var productResponse = new ProductResponse()
-            //         {
-            //             Id = product.Id,
-            //             Title = product.Title,
-            //             Description = product.Description,
-            //             Brand = product.Brand,
-            //             Units = product.Units,
-            //             CategoryId = product.CategoryId,
-            //             Discount = productDetails.Discount,
-            //             Price= productDetails.Price,
-            //             ProductDetailId =productDetails.Id,
-            //             FilePath = filePath,
-            //             FileName = fileName
-            //         };
-            //     return Result<ProductResponse>.Success(productResponse);
-            //     }
-            // }
-            //return Result<ProductResponse>.Failure("Something went Wrong", StatusCodes.Status500InternalServerError);
         }
 
         public async Task<Result<IEnumerable<ProductResponse>>> GetProductsByCategoryId(Guid catId)

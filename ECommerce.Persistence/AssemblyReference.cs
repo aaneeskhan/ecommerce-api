@@ -1,4 +1,5 @@
 ﻿using ECommerce.Application.Abstraction.IRepository;
+using ECommerce.Application.Abstraction.IUnitOfWork;
 using ECommerce.Persistence.Data;
 using ECommerce.Persistence.Repository;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ namespace ECommerce.Persistence
           services.AddScoped<ICategoryRepository,CategoryRepository>();
           services.AddScoped<IProductRepository,ProductRepository>();
           services.AddScoped<IProductDetailsRepository,ProductDetailsRepository>();
+          services.AddScoped<IUnitOfWork,UnitOfWork>();
             services.AddDbContext<ECommerceContext>(options => options.UseSqlServer(configuration.GetConnectionString("ECommerceDbContext")));
             return services;
         }

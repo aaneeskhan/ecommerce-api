@@ -31,6 +31,7 @@ namespace ECommerce.Persistence.Repository
 
         public async Task<IEnumerable<ProductResponseWithJsonResult>> GetProductsByCatId(Guid categoryId)
         {
+           
             var products = await context.Database.SqlQuery<ProductResponseWithJsonResult>($@"SELECT P.Id, P.Title, P.Brand, P.[Description], P.Units, P.CategoryId, P.CreatedOn,
 	                                                                       (
 		                                                                        SELECT PD.Id AS ProductDetailId, Price, Discount, FilePath, [FileName]  FROM ProductDetails PD
@@ -48,7 +49,7 @@ namespace ECommerce.Persistence.Repository
         {
             string query = $@"INSERT INTO Products VALUES('{model.ProductId}', '{model.ProductRequest.Title}', '{model.ProductRequest.Brand}','{model.ProductRequest.Description}', {(int)model.ProductRequest.Units} , '{model.ProductRequest.CategoryId}', '{model.CreatedOn}')";
 
-            //query += $@" INSERT INTO ProductDetails VALUES('{Guid.CreateVersion7()}', {model.ProductRequest.Price}, {model.ProductRequest.Discount}, '{model.FilePath}', '{model.FileName}', '{model.ProductId}', '{DateTimeOffset.UtcNow}')";
+            query += $@" INSERT INTO ProductDetails VALUES('{Guid.CreateVersion7()}', {model.ProductRequest.Price}, {model.ProductRequest.Discount}, '{model.FilePath}', '{model.FileName}', '{model.ProductId}', '{DateTimeOffset.UtcNow}')";
 
       
 

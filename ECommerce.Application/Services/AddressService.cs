@@ -5,6 +5,7 @@ using System.Text;
 using ECommerce.Application.Abstraction.IContextService;
 using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IServices;
+using ECommerce.Application.Abstraction.IUnitOfWork;
 using ECommerce.Application.RRModels.Address;
 using ECommerce.Application.Utils.Result;
 using ECommerce.Domain.Entities;
@@ -12,7 +13,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace ECommerce.Application.Services
 {
-    public class AddressService(IAdddressRepository adddressRepository, IContextService contextService) : IAddressService
+    public class AddressService(IAdddressRepository adddressRepository, IContextService contextService ,IUnitOfWork unitOfWork) : IAddressService
     {
         public async Task<Result<AddressResponse>> AddAddress(AddressRequest model)
         {
@@ -41,7 +42,8 @@ namespace ECommerce.Application.Services
                 ContactNo = model.ContactNo,
                 UserId = userId,
             };
-            var returnValue = await adddressRepository.AddAsync(address);
+             await adddressRepository.AddAsync(address);
+            var returnValue = await unitOfWork.SaveChangeAsync();
             if (returnValue > 0)
             {
                 return Result<AddressResponse>.Success(value: new AddressResponse
@@ -61,8 +63,9 @@ namespace ECommerce.Application.Services
 
         public async Task<Result<int>> DeleteAddresses(IEnumerable<Guid> ids)
         {
-            var isDeleted=await adddressRepository.DeleteRangeAsync(ids);
-            if (isDeleted > 0)
+           await adddressRepository.DeleteRangeAsync(ids);
+            var returnValue=await unitOfWork.SaveChangeAsync();
+            if (returnValue > 0)
             {
                 return Result<int>.Success(message: "Addresses Deleted successfully");
             }
@@ -81,8 +84,9 @@ namespace ECommerce.Application.Services
             {
                 return Result<int>.Failure("No addresses found", StatusCodes.Status404NotFound);
             }
-            var isDeleted=await adddressRepository.DeleteRangeAsync(addresses);
-            if(isDeleted > 0)
+          await adddressRepository.DeleteRangeAsync(addresses);
+            var retrunValue=await unitOfWork.SaveChangeAsync();
+            if (retrunValue > 0)
             {
                 return Result<int>.Success(message:"Addresses Deleted successfully");
             }
@@ -96,8 +100,9 @@ namespace ECommerce.Application.Services
             {
                 return Result<AddressResponse>.Failure("No address found", StatusCodes.Status404NotFound);
             }
-            var isDeleted=await adddressRepository.DeleteAsync(id);
-            if(isDeleted > 0)
+            await adddressRepository.DeleteAsync(id);
+            var returnValue=await unitOfWork.SaveChangeAsync();
+            if(returnValue > 0)
             { 
                 return Result<AddressResponse>.Success(value: new AddressResponse
                 {
@@ -204,9 +209,10 @@ namespace ECommerce.Application.Services
             address.State = model.State;
             address.Pincode = model.Pincode;
 
-            var isUpdated=await adddressRepository.UpdateAsync(address);
+            await adddressRepository.UpdateAsync(address);
+            var returnValue = await unitOfWork.SaveChangeAsync();
 
-            if(isUpdated > 0)
+            if(returnValue > 0)
             {
                 var addressResponse=new AddressResponse()
                 {

@@ -4,6 +4,7 @@ using System.Text;
 using ECommerce.Application.Abstraction.IRepository;
 using ECommerce.Application.Abstraction.IServices;
 using ECommerce.Application.Abstraction.IStorageService;
+using ECommerce.Application.Abstraction.IUnitOfWork;
 using ECommerce.Application.RRModels.Category;
 using ECommerce.Application.Utils.Result;
 using ECommerce.Domain.Entities;
@@ -11,7 +12,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace ECommerce.Application.Services
 {
-    public class CategoryService(ICategoryRepository categoryRepository,IStorageService storageService) : ICategoryService
+    public class CategoryService(ICategoryRepository categoryRepository,IStorageService storageService ,IUnitOfWork unitOfWork) : ICategoryService
     {
         public async Task<Result<CategoryResponse>> CreateCategory(CategoryRequest model)
         {
@@ -28,9 +29,10 @@ namespace ECommerce.Application.Services
                 FilePath=filePath,
                 FileName=fileName
             };
-            var res=await categoryRepository.AddAsync(category);
+            await categoryRepository.AddAsync(category);
+            var res= await unitOfWork.SaveChangeAsync();
 
-            if(res>0)
+            if (res>0)
             {
                 var categoryResponse= new CategoryResponse()
                 {
@@ -157,8 +159,8 @@ namespace ECommerce.Application.Services
             category.FilePath= filePath;
             category.FileName = fileName;
 
-            var res=await categoryRepository.UpdateAsync(category);
-
+            await categoryRepository.UpdateAsync(category);
+                var res = await unitOfWork.SaveChangeAsync();
             if (res > 0)
             {
                 var categoryResponse = new CategoryResponse()

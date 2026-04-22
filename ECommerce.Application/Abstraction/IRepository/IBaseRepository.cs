@@ -20,19 +20,19 @@ namespace ECommerce.Application.Abstraction.IRepository
 
         //ADD
 
-        Task<int> AddAsync(T entity);
-        Task<int> AddRAngeAsync(IEnumerable<T> entities);
+        Task AddAsync(T entity);
+        Task AddRAngeAsync(IEnumerable<T> entities);
 
         //Update
 
-        Task<int> UpdateAsync(T entity);
-        Task<int> UpdateRangeAsync(IEnumerable<T> entities);
+        Task UpdateAsync(T entity);
+        Task UpdateRangeAsync(IEnumerable<T> entities);
 
         //DELETE
 
-        Task<int> DeleteAsync(T entities);
-        Task<int> DeleteRangeAsync(IEnumerable<T> entities);
-        Task<int> DeleteAsync(Guid id);
-        Task<int> DeleteRangeAsync(IEnumerable<Guid> ids);
+        Task DeleteAsync(T entities);
+        Task DeleteRangeAsync(IEnumerable<T> entities);
+        Task DeleteAsync(Guid id);
+        Task DeleteRangeAsync(IEnumerable<Guid> ids);
     }
 }
