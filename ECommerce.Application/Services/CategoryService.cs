@@ -50,6 +50,8 @@ namespace ECommerce.Application.Services
 
         public async Task<Result<IEnumerable<CategoryResponse>>> GetAllCategories()
         {
+           
+           
             var categories=await categoryRepository.GetAllAsync();
             if(categories is null)
             {
@@ -142,6 +144,7 @@ namespace ECommerce.Application.Services
 
         public async Task<Result<CategoryResponse>> UpdateCategory(UpdateCategoryRequest model)
         {
+
             var category = await categoryRepository.GetByIdAsync(model.Id);
             if (category is null)
             {

@@ -36,7 +36,7 @@ namespace ECommerce.Application.Services
             //    CreatedOn = DateTimeOffset.UtcNow
             //};
 
-          
+
 
             //var returnValue =  await productRepository.InsertProductWithDetails(productWithDetails);
 
@@ -58,6 +58,23 @@ namespace ECommerce.Application.Services
             //    return Result<ProductResponse>.Success(productResponse);
             //}
             //return Result<ProductResponse>.Failure("Something went Wrong", StatusCodes.Status500InternalServerError);
+
+            try
+            {
+            }
+          
+            catch (DivideByZeroException ex)
+            {
+                return Result<ProductResponse>.Failure($"Invalid argument: {ex.Message}", StatusCodes.Status400BadRequest);
+            }
+            catch (ArgumentException ex)
+            {
+                return Result<ProductResponse>.Failure($"Invalid argument: {ex.Message}", StatusCodes.Status400BadRequest);
+            }
+            catch (Exception ex)
+            {
+                return Result<ProductResponse>.Failure($"An error occurred: {ex.Message}", StatusCodes.Status500InternalServerError);
+            }
 
 
             var product = new Product()
@@ -194,4 +211,6 @@ namespace ECommerce.Application.Services
             return Result<IEnumerable<ProductResponseWithJsonResult>>.Success(products);
         }
     }
+
+
 }

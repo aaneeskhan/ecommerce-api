@@ -1,6 +1,7 @@
 ﻿using ECommerce.Api.CustomExtensions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel;
 using System.Net;
 
 namespace ECommerce.Api.Controllers
@@ -11,6 +12,11 @@ namespace ECommerce.Api.Controllers
     {
         public IActionResult Get()
         {
+            string str = "Tawheed120";
+            int a = int.Parse(str);
+            int x = 10;
+            int y = 0;
+            int r = x / y;
              var path = env.WebRootPath;
             return Ok("");
             //ActionResult result = new OkObjectResult("Welcome to the E-Commerce API!");

@@ -1,4 +1,5 @@
 ﻿
+using ECommerce.Api.MIddlewares;
 using ECommerce.Application;
 using ECommerce.Domain.Entities;
 using ECommerce.Infrastructure;
@@ -16,6 +17,8 @@ namespace ECommerce.Api
         public static IServiceCollection AddApiServices(this IServiceCollection services,IConfiguration configuration,IWebHostEnvironment environment)
         {
             services.AddControllers();
+            services.AddExceptionHandler<GlobalExceptionHandler>();
+            services.AddProblemDetails();
             services.AddApplicationServices();
             services.AddPersistenceServices(configuration);
             services.AddInfrastructureServices(environment.WebRootPath,environment.IsDevelopment(),configuration);
